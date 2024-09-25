@@ -1,0 +1,5 @@
+LIBRARY "Ty 1 Tools"
+
+EXPORTS
+TygerFrameworkPluginInitialize
+TygerFrameworkPluginRequiredVersion
