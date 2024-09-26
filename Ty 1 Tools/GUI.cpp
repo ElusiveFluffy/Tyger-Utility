@@ -1,6 +1,8 @@
 #include "GUI.h"
 #include "framework.h"
 #include "TyMemoryValues.h"
+#include <string>
+#include <format>
 
 //Fonts
 #include "Fonts/TyFont.hpp"
@@ -16,8 +18,14 @@
 //WndProc to be able to interact with imgui or block any WndProc from interacting with the Ty window
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
-		return true;
+
+	if (msg == WM_KEYDOWN && (int)wParam == 'B')
+		TyMemoryValues::SetTyPos({ 71.0f, 2623.0f, 209.0f });
+
+	if (API::DrawingGUI())
+		if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+			return true;
+
 	return false;
 }
 
@@ -53,8 +61,8 @@ void GUI::SetImGuiStyle() {
 	ImFontConfig custom_icons{};
 	custom_icons.FontDataOwnedByAtlas = false;
 
-	GUI::TyFont = fonts->AddFontFromMemoryCompressedTTF(SfSlapstickComic_compressed_data, SfSlapstickComic_compressed_size, 20);
-	GUI::TyNumberFont = fonts->AddFontFromMemoryCompressedTTF(TyNumberFont_compressed_data, TyNumberFont_compressed_size, GUI::FontSize);
+	GUI::TyFont = fonts->AddFontFromMemoryCompressedTTF(SfSlapstickComic_compressed_data, SfSlapstickComic_compressed_size, GUI::FontSize);
+	GUI::TyNumberFont = fonts->AddFontFromMemoryCompressedTTF(TyNumberFont_compressed_data, TyNumberFont_compressed_size, 28);
 	fonts->Build();
 }
 
@@ -64,9 +72,7 @@ void GUI::DrawUI()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	//Only draw the overlay during gameplay
-	if (TyMemoryValues::Get()->TyGameState() == Gameplay)
-		DrawCanvas();
+	Overlay::DrawOverlay();
 
 	if (API::DrawingGUI())
 	{
@@ -85,7 +91,7 @@ bool GUI::ImGuiHasFocus()
 	return ImGui::GetIO().WantCaptureMouse;
 }
 
-void GUI::DrawCanvas()
+void GUI::Overlay::DrawOverlay()
 {
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -93,31 +99,61 @@ void GUI::DrawCanvas()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0.0f, 0.0f, 0.0f, 0.0f });
-	ImGui::Begin("Ty 1 Tools Overlay", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
+	ImGui::Begin("Ty 1 Tools Overlay", nullptr, ImGuiWindowFlags_NoDecoration);
 
-	ImGui::SetWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-	ImGui::SetWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y), ImGuiCond_Always);
+	//Only set the pos on the first time loading the plugin
+	ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - 550, 150), ImGuiCond_FirstUseEver);
+	//Auto resize to content
+	ImGui::SetWindowSize(ImVec2(LongestLine * 13.71f, TextLineCount * (FontSize + 5)), ImGuiCond_Always);
+	//Reset the counts
+	TextLineCount = 0;
+	LongestLine = 0;
 
 	ImGuiWindow* window = ImGui::GetCurrentWindow();
-	ImDrawList* draw_list = window->DrawList;
-	ImVec2 p0 = ImVec2(50, 25);
-	ImVec2 p1 = ImVec2(200, 250);
-	draw_list->AddRectFilled(p0, p1, IM_COL32(50, 50, 50, 255));
-	draw_list->AddRect(p0, p1, IM_COL32(255, 255, 255, 255));
-	DrawListAddDropShadowText(ImVec2(io.DisplaySize.x - 100, io.DisplaySize.y - 30), ImVec2(3, 4), draw_list, "Test");
-	DrawListAddDropShadowText(ImVec2(io.DisplaySize.x - 1000, io.DisplaySize.y - 30), ImVec2(3, 4), draw_list, "Hello");
+	ImDrawList* drawList = window->DrawList;
+	//Set the text start pos to the window pos
+	TextStartPos = window->Pos;
 
-	ImVec2 midpoint = ImVec2(500, 500);
-	draw_list->AddCircle(midpoint, 30, ImColor(51, 255, 0), 0, 20);
+	//Only draw this overlay elements during gameplay
+	if (TyMemoryValues::GetTyGameState() == Gameplay)
+	{
+		DrawDropShadowText(drawList, "Ty:");
+		TyMemoryValues::Vector3 tyPos = TyMemoryValues::GetTyPos();
+		DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
+		DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyMemoryValues::GetTyRot()));
+	}
 
-	window->DrawList->PushClipRectFullScreen();
+	drawList->PushClipRectFullScreen();
 	ImGui::End();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleVar(2);
 }
 
-void GUI::DrawListAddDropShadowText(ImVec2 position, ImVec2 Offset, ImDrawList* drawList, const char* text)
+void GUI::Overlay::DrawLabelWithNumbers(ImDrawList* drawList, std::string label, std::string numberText)
 {
-	drawList->AddText(GUI::TyFont, GUI::TyFont->FontSize, ImVec2(position.x + Offset.x, position.y + Offset.y), IM_COL32(10, 10, 10, 255), text);
-	drawList->AddText(GUI::TyFont, GUI::TyFont->FontSize, position, IM_COL32(255, 255, 255, 255), text);
+	DrawDropShadowText(drawList, label.c_str(), false);
+	DrawDropShadowText(drawList, numberText.c_str(), true, ImVec2((label.length() * 13.71f), -5), TyNumberFont);
+
+	//Work out if this line is longer than any of the other ones (needs to be done here too to check the two combined)
+	int lineLength = (label.length() + numberText.length());
+	if (lineLength > LongestLine)
+		LongestLine = lineLength;
+}
+
+void GUI::Overlay::DrawDropShadowText(ImDrawList* drawList, const char* text, bool addNewLine, ImVec2 positionOffset, ImFont* font)
+{
+	//Pos
+	float x = TextStartPos.x + positionOffset.x;
+	float y = TextStartPos.y + (TextLineCount * (FontSize + 5)) + positionOffset.y;
+	//Draw text
+	drawList->AddText(font, font->FontSize, ImVec2(x + DropShadowOffset.x, y + DropShadowOffset.y), IM_COL32(10, 10, 10, 255), text); //Drop shadow text
+	drawList->AddText(font, font->FontSize, ImVec2(x, y), IM_COL32(255, 255, 255, 255), text); //Normal text
+	//Add New Line
+	if (addNewLine)
+		TextLineCount++;
+
+	//Work out if this line is longer than any of the other ones
+	int lineLength = strlen(text);
+	if (lineLength > LongestLine)
+		LongestLine = lineLength;
 }

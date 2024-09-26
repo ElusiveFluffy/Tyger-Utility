@@ -1,12 +1,7 @@
 #include "TyMemoryValues.h"
+#include "TygerFrameworkAPI.hpp"
 
-std::shared_ptr<TyMemoryValues>& TyMemoryValues::Get()
+void TyMemoryValues::GetBaseAddress()
 {
-	static auto instance = std::make_shared<TyMemoryValues>();
-	return instance;
-}
-
-void TyMemoryValues::GetMemoryValues()
-{
-	//TyGameState = *(GameState*)0x00F78A6C;
+	TyBaseAddress = (DWORD)API::Get()->param()->tygerFrameworkModule;
 }

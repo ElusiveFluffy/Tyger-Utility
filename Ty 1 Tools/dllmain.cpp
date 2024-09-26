@@ -44,6 +44,8 @@ EXTERN_C bool TygerFrameworkPluginInitialize(TygerFrameworkPluginInitializeParam
 
     API::Initialize(param);
 
+    TyMemoryValues::GetBaseAddress();
+
     //Subcribe functions to TygerFramework events
     //API::AddDrawPluginUI(GUI::DrawUI);
     //Make sure to cast this, otherwise TygerFramework won't get the return value
