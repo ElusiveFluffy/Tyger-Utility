@@ -9,7 +9,10 @@ namespace GUI
 	static ImFont* TyNumberFont;
 
 	void Initialize();
+
 	void DrawUI();
+	void RangsDrawUI();
+
 	void SetImGuiStyle();
 	bool ImGuiHasFocus();
 

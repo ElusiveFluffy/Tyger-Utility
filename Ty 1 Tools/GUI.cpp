@@ -1,6 +1,7 @@
 #include "GUI.h"
 #include "framework.h"
 #include "TyMemoryValues.h"
+#include "TyAttributes.h"
 #include <string>
 #include <format>
 
@@ -73,7 +74,7 @@ void GUI::DrawUI()
 	ImGui::NewFrame();
 
 	if (Overlay::ShowOverlay)
-	Overlay::DrawOverlay();
+		Overlay::DrawOverlay();
 
 	if (API::DrawingGUI())
 	{
@@ -87,11 +88,88 @@ void GUI::DrawUI()
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Tip: You can drag the overlay around to place it anywhere you want");
 
+		ImGui::Spacing();
+
+		if (ImGui::BeginTabBar("Tool Tabs", ImGuiTabBarFlags_Reorderable)) {
+			if (ImGui::BeginTabItem("Rangs")) {
+				RangsDrawUI();
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();
+		}
+
 		ImGui::End();
 	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void GUI::RangsDrawUI()
+{
+	if (ImGui::Button("Give All Rangs"))
+		TyAttributes::SetAllRangs(true);
+	ImGui::SameLine();
+	if (ImGui::Button("Remove All Rangs"))
+		TyAttributes::SetAllRangs(false);
+
+	if (ImGui::BeginTable("Rangs", 3)) {
+		//Row 1
+		ImGui::Checkbox("2nd Rang", TyAttributes::GetRangState(TyAttributes::Two));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Swim", TyAttributes::GetRangState(TyAttributes::Swim));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Dive", TyAttributes::GetRangState(TyAttributes::Dive));
+
+		//Row 2
+		ImGui::TableNextColumn(); ImGui::Checkbox("Boomerang", TyAttributes::GetRangState(TyAttributes::IronBark));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Flamerang", TyAttributes::GetRangState(TyAttributes::Flame));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Frostyrang", TyAttributes::GetRangState(TyAttributes::Frosty));
+
+		//Row 3
+		ImGui::TableNextColumn(); ImGui::Checkbox("Zappyrang", TyAttributes::GetRangState(TyAttributes::Zappy));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Aquarang", TyAttributes::GetRangState(TyAttributes::Aqua));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Zoomerang", TyAttributes::GetRangState(TyAttributes::Zoomer));
+
+		//Row 4
+		ImGui::TableNextColumn(); ImGui::Checkbox("Multirang", TyAttributes::GetRangState(TyAttributes::Multi));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Infrarang", TyAttributes::GetRangState(TyAttributes::Infra));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Megarang", TyAttributes::GetRangState(TyAttributes::Mega));
+
+		//Row 5
+		ImGui::TableNextColumn(); ImGui::Checkbox("Kaboomarang", TyAttributes::GetRangState(TyAttributes::Kaboom));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Chronorang", TyAttributes::GetRangState(TyAttributes::Chrono));
+		ImGui::TableNextColumn(); ImGui::Checkbox("Doomarang", TyAttributes::GetRangState(TyAttributes::Doom));
+	}
+	ImGui::EndTable();
+
+	//ImGui::Columns(3, NULL);
+	////Row 1
+	//ImGui::Checkbox("2nd Rang", TyAttributes::GetRangState(TyAttributes::Two));
+	//ImGui::NextColumn(); ImGui::Checkbox("Swim", TyAttributes::GetRangState(TyAttributes::Swim));
+	//ImGui::NextColumn(); ImGui::Checkbox("Dive", TyAttributes::GetRangState(TyAttributes::Dive));
+	//
+	////Row 2
+	//ImGui::Separator(); 
+	//ImGui::NextColumn(); ImGui::Checkbox("Boomerang", TyAttributes::GetRangState(TyAttributes::IronBark));
+	//ImGui::NextColumn(); ImGui::Checkbox("Flamerang", TyAttributes::GetRangState(TyAttributes::Flame));
+	//ImGui::NextColumn(); ImGui::Checkbox("Frostyrang", TyAttributes::GetRangState(TyAttributes::Frosty));
+	//
+	////Row 3
+	//ImGui::Separator(); 
+	//ImGui::NextColumn(); ImGui::Checkbox("Zappyrang", TyAttributes::GetRangState(TyAttributes::Zappy));
+	//ImGui::NextColumn(); ImGui::Checkbox("Aquarang", TyAttributes::GetRangState(TyAttributes::Aqua));
+	//ImGui::NextColumn(); ImGui::Checkbox("Zoomerang", TyAttributes::GetRangState(TyAttributes::Zoomer));
+	//
+	////Row 4
+	//ImGui::Separator(); 
+	//ImGui::NextColumn(); ImGui::Checkbox("Multirang", TyAttributes::GetRangState(TyAttributes::Multi));
+	//ImGui::NextColumn(); ImGui::Checkbox("Infrarang", TyAttributes::GetRangState(TyAttributes::Infra));
+	//ImGui::NextColumn(); ImGui::Checkbox("Megarang", TyAttributes::GetRangState(TyAttributes::Mega));
+	//
+	////Row 5
+	//ImGui::Separator(); 
+	//ImGui::NextColumn(); ImGui::Checkbox("Kaboomarang", TyAttributes::GetRangState(TyAttributes::Kaboom));
+	//ImGui::NextColumn(); ImGui::Checkbox("Chronorang", TyAttributes::GetRangState(TyAttributes::Chrono));
+	//ImGui::NextColumn(); ImGui::Checkbox("Doomarang", TyAttributes::GetRangState(TyAttributes::Doom));
 }
 
 bool GUI::ImGuiHasFocus()

@@ -25,6 +25,12 @@
     <Filter Include="Fonts">
       <UniqueIdentifier>{f464570f-e4be-4045-9ad4-6f987c5c7673}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Ty Memory Values">
+      <UniqueIdentifier>{f6eff282-f7eb-4363-8d92-0d45a7e753b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Ty Memory Values">
+      <UniqueIdentifier>{069cc433-1ad7-4410-8962-e3b39cdb5f29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -79,7 +85,10 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="TyMemoryValues.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Ty Memory Values</Filter>
+    </ClInclude>
+    <ClInclude Include="TyAttributes.h">
+      <Filter>Header Files\Ty Memory Values</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -111,7 +120,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TyMemoryValues.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Ty Memory Values</Filter>
+    </ClCompile>
+    <ClCompile Include="TyAttributes.cpp">
+      <Filter>Source Files\Ty Memory Values</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

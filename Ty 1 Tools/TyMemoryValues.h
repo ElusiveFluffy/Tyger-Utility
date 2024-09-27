@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 #include "framework.h"
 
 enum GameState {
@@ -35,4 +36,6 @@ public:
 
 	static inline DWORD TyBaseAddress;
 	static void GetBaseAddress();
+	static std::vector<UINT> GetPointerAddresses(int baseAddress, std::vector<UINT> offsets);
+	static UINT GetPointerAddress(int baseAddress, UINT offset);
 };
