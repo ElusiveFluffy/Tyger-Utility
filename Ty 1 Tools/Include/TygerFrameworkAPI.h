@@ -4,7 +4,7 @@
 
 constexpr int TygerFrameworkPluginVersion_Major = 1;
 constexpr int TygerFrameworkPluginVersion_Minor = 0;
-constexpr int TygerFrameworkPluginVersion_Patch = 0;
+constexpr int TygerFrameworkPluginVersion_Patch = 1;
 
 typedef struct {
 	int Major;
@@ -64,7 +64,7 @@ typedef struct {
 }TygerFrameworkPluginFunctions;
 
 typedef struct {
-	void* tygerFrameworkModule;
+	void* TyHModule;
 	std::string pluginFileName;
 	const TygerFrameworkPluginFunctions* functions;
 	std::string initErrorMessage; //Error message that gets read by TygerFramework if the plugin can't initialize (returning false on initialize)

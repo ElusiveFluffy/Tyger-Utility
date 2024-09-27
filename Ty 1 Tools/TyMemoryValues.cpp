@@ -3,5 +3,6 @@
 
 void TyMemoryValues::GetBaseAddress()
 {
-	TyBaseAddress = (DWORD)API::Get()->param()->tygerFrameworkModule;
+	TyBaseAddress = (DWORD)API::Get()->param()->TyHModule;
+	API::LogPluginMessage("Got Ty Base Address");
 }
