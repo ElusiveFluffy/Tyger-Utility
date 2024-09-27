@@ -15,6 +15,7 @@ namespace GUI
 
 	class Overlay {
 	public:
+		inline static bool ShowOverlay;
 		inline static int TextLineCount;
 		inline static int LongestLine;
 		inline static ImVec2 TextStartPos;

@@ -75,6 +75,9 @@
     <ClInclude Include="Fonts\TyNumberFont.hpp">
       <Filter>Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="Include\ini.h">
+      <Filter>Include</Filter>
+    </ClInclude>
     <ClInclude Include="TyMemoryValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -72,12 +72,20 @@ void GUI::DrawUI()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+	if (Overlay::ShowOverlay)
 	Overlay::DrawOverlay();
 
 	if (API::DrawingGUI())
 	{
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::SetNextWindowPos(ImVec2(60, 420), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize(ImVec2(285, 240), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Ty 1 Tools");
-		ImGui::Text("Hello World");
+		ImGui::Checkbox("Show Ty Location Overlay", &Overlay::ShowOverlay);
+		ImGui::SameLine();
+		ImGui::Text("(?)");
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Tip: You can drag the overlay around to place it anywhere you want");
 
 		ImGui::End();
 	}
