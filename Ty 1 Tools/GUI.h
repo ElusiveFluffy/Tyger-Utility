@@ -16,7 +16,7 @@ namespace GUI
 	void RangsDrawUI();
 
 	void SetImGuiStyle();
-	bool ImGuiHasFocus();
+	bool ImGuiWantCaptureMouse();
 
 	class Overlay {
 	public:

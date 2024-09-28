@@ -176,7 +176,7 @@ void GUI::RangsDrawUI()
 	//ImGui::NextColumn(); ImGui::Checkbox("Doomarang", TyAttributes::GetRangState(TyAttributes::Doom));
 }
 
-bool GUI::ImGuiHasFocus()
+bool GUI::ImGuiWantCaptureMouse()
 {
 	return ImGui::GetIO().WantCaptureMouse;
 }
