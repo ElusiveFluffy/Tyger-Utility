@@ -1,5 +1,6 @@
 #pragma once
 #include "TyMemoryValues.h"
+#include <cmath>
 
 class TyPositionRotation {
 public:
@@ -15,7 +16,10 @@ public:
 
 	//Bull Pos and Rot
 	static Vector3 GetBullPos() { return { *(float*)(TyMemoryValues::TyBaseAddress + 0x254268), *(float*)(TyMemoryValues::TyBaseAddress + 0x25426C), *(float*)(TyMemoryValues::TyBaseAddress + 0x254270) }; };
-	static float GetBullRot() { return *(float*)(TyMemoryValues::TyBaseAddress + 0x2545F4); };
+	static float GetBullRot() { 
+		float bullRot = *(float*)(TyMemoryValues::TyBaseAddress + 0x2545F4);
+		return std::abs((float)((int)(bullRot * 1000) % 6282) / 1000);
+	};
 
 	//Set
 	static void SetTyPos(Vector3 position) {
