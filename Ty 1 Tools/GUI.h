@@ -29,6 +29,11 @@ namespace GUI
 		static void DrawOverlay();
 		static void DrawLabelWithNumbers(ImDrawList* drawList, std::string label, std::string numberText);
 		static void DrawDropShadowText(ImDrawList* drawList, const char* text, bool addNewLine = true, ImVec2 positionOffset = ImVec2(0, 0), ImFont* font = GUI::TyFont);
+
+	private:
+		//States
+		static std::string TyStateText();
+		static std::string BullStateText();
 	};
 };
 

@@ -90,6 +90,12 @@
     <ClInclude Include="TyAttributes.h">
       <Filter>Header Files\Ty Memory Values</Filter>
     </ClInclude>
+    <ClInclude Include="TyState.h">
+      <Filter>Header Files\Ty Memory Values</Filter>
+    </ClInclude>
+    <ClInclude Include="Levels.h">
+      <Filter>Header Files\Ty Memory Values</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

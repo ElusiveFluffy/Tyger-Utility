@@ -2,6 +2,8 @@
 #include "framework.h"
 #include "TyMemoryValues.h"
 #include "TyAttributes.h"
+#include "TyState.h"
+#include "Levels.h"
 #include <string>
 #include <format>
 
@@ -82,7 +84,7 @@ void GUI::DrawUI()
 		ImGui::SetNextWindowPos(ImVec2(60, 420), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(285, 240), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Ty 1 Tools");
-		ImGui::Checkbox("Show Ty Location Overlay", &Overlay::ShowOverlay);
+		ImGui::Checkbox("Show Debug Overlay", &Overlay::ShowOverlay);
 		ImGui::SameLine();
 		ImGui::Text("(?)");
 		if (ImGui::IsItemHovered())
@@ -181,6 +183,22 @@ bool GUI::ImGuiWantCaptureMouse()
 	return ImGui::GetIO().WantCaptureMouse;
 }
 
+std::string GUI::Overlay::TyStateText() {
+	//If the map doesn't contain the state just use the ID
+	if (!TyState::Ty.contains(TyState::GetTyState2()))
+		return std::to_string(TyState::GetTyState2());
+
+	return TyState::Ty[TyState::GetTyState2()];
+}
+
+std::string GUI::Overlay::BullStateText() {
+	//If the map doesn't contain the state just use the ID
+	if (!TyState::Bull.contains(TyState::GetBullState()))
+		return std::to_string(TyState::GetBullState());
+
+	return TyState::Bull[TyState::GetBullState()];
+}
+
 void GUI::Overlay::DrawOverlay()
 {
 	ImGuiIO& io = ImGui::GetIO();
@@ -205,12 +223,25 @@ void GUI::Overlay::DrawOverlay()
 	TextStartPos = window->Pos;
 
 	//Only draw this overlay elements during gameplay
-	if (TyMemoryValues::GetTyGameState() == Gameplay)
+	if (TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay)
 	{
-		DrawDropShadowText(drawList, "Ty:");
-		TyMemoryValues::Vector3 tyPos = TyMemoryValues::GetTyPos();
-		DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
-		DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyMemoryValues::GetTyRot()));
+		//Only Show the Values for the bull if in outback safari
+		if (Levels::GetCurrentLevelID() != 10)
+		{
+			DrawDropShadowText(drawList, "Ty:");
+			TyMemoryValues::Vector3 tyPos = TyMemoryValues::GetTyPos();
+			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
+			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyMemoryValues::GetTyRot()));
+			DrawDropShadowText(drawList, ("State: " + TyStateText()).c_str());
+			DrawLabelWithNumbers(drawList, "State:", std::to_string(TyState::GetTyState2()));
+			DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
+		}
+		else
+		{
+			DrawDropShadowText(drawList, "Bull:");
+			DrawDropShadowText(drawList, ("State: " + BullStateText()).c_str());
+			DrawLabelWithNumbers(drawList, "State:", std::to_string(TyState::GetBullState()));
+		}
 	}
 
 	drawList->PushClipRectFullScreen();

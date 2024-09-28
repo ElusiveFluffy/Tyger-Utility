@@ -173,9 +173,11 @@
     <ClInclude Include="Include\ini.h" />
     <ClInclude Include="Include\TygerFrameworkAPI.h" />
     <ClInclude Include="Include\TygerFrameworkAPI.hpp" />
+    <ClInclude Include="Levels.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TyAttributes.h" />
     <ClInclude Include="TyMemoryValues.h" />
+    <ClInclude Include="TyState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
