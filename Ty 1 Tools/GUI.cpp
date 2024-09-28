@@ -1,11 +1,14 @@
 #include "GUI.h"
 #include "framework.h"
+#include <string>
+#include <format>
+
+//Memory
 #include "TyMemoryValues.h"
 #include "TyAttributes.h"
 #include "TyState.h"
+#include "TyPositionRotation.h"
 #include "Levels.h"
-#include <string>
-#include <format>
 
 //Fonts
 #include "Fonts/TyFont.hpp"
@@ -23,7 +26,7 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 	if (msg == WM_KEYDOWN && (int)wParam == 'B')
-		TyMemoryValues::SetTyPos({ 71.0f, 2623.0f, 209.0f });
+		TyPositionRotation::SetTyPos({ 71.0f, 2623.0f, 209.0f });
 
 	if (API::DrawingGUI())
 		if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
@@ -146,36 +149,6 @@ void GUI::RangsDrawUI()
 		ImGui::TableNextColumn(); ImGui::Checkbox("Doomarang", TyAttributes::GetRangState(TyAttributes::Doom));
 	}
 	ImGui::EndTable();
-
-	//ImGui::Columns(3, NULL);
-	////Row 1
-	//ImGui::Checkbox("2nd Rang", TyAttributes::GetRangState(TyAttributes::Two));
-	//ImGui::NextColumn(); ImGui::Checkbox("Swim", TyAttributes::GetRangState(TyAttributes::Swim));
-	//ImGui::NextColumn(); ImGui::Checkbox("Dive", TyAttributes::GetRangState(TyAttributes::Dive));
-	//
-	////Row 2
-	//ImGui::Separator(); 
-	//ImGui::NextColumn(); ImGui::Checkbox("Boomerang", TyAttributes::GetRangState(TyAttributes::IronBark));
-	//ImGui::NextColumn(); ImGui::Checkbox("Flamerang", TyAttributes::GetRangState(TyAttributes::Flame));
-	//ImGui::NextColumn(); ImGui::Checkbox("Frostyrang", TyAttributes::GetRangState(TyAttributes::Frosty));
-	//
-	////Row 3
-	//ImGui::Separator(); 
-	//ImGui::NextColumn(); ImGui::Checkbox("Zappyrang", TyAttributes::GetRangState(TyAttributes::Zappy));
-	//ImGui::NextColumn(); ImGui::Checkbox("Aquarang", TyAttributes::GetRangState(TyAttributes::Aqua));
-	//ImGui::NextColumn(); ImGui::Checkbox("Zoomerang", TyAttributes::GetRangState(TyAttributes::Zoomer));
-	//
-	////Row 4
-	//ImGui::Separator(); 
-	//ImGui::NextColumn(); ImGui::Checkbox("Multirang", TyAttributes::GetRangState(TyAttributes::Multi));
-	//ImGui::NextColumn(); ImGui::Checkbox("Infrarang", TyAttributes::GetRangState(TyAttributes::Infra));
-	//ImGui::NextColumn(); ImGui::Checkbox("Megarang", TyAttributes::GetRangState(TyAttributes::Mega));
-	//
-	////Row 5
-	//ImGui::Separator(); 
-	//ImGui::NextColumn(); ImGui::Checkbox("Kaboomarang", TyAttributes::GetRangState(TyAttributes::Kaboom));
-	//ImGui::NextColumn(); ImGui::Checkbox("Chronorang", TyAttributes::GetRangState(TyAttributes::Chrono));
-	//ImGui::NextColumn(); ImGui::Checkbox("Doomarang", TyAttributes::GetRangState(TyAttributes::Doom));
 }
 
 bool GUI::ImGuiWantCaptureMouse()
@@ -229,18 +202,21 @@ void GUI::Overlay::DrawOverlay()
 		if (Levels::GetCurrentLevelID() != 10)
 		{
 			DrawDropShadowText(drawList, "Ty:");
-			TyMemoryValues::Vector3 tyPos = TyMemoryValues::GetTyPos();
+			TyPositionRotation::Vector3 tyPos = TyPositionRotation::GetTyPos();
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
-			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyMemoryValues::GetTyRot()));
+			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetTyRot()));
 			DrawDropShadowText(drawList, ("State: " + TyStateText()).c_str());
-			DrawLabelWithNumbers(drawList, "State:", std::to_string(TyState::GetTyState2()));
+			DrawLabelWithNumbers(drawList, "State ID:", std::to_string(TyState::GetTyState2()));
 			DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
 		}
 		else
 		{
 			DrawDropShadowText(drawList, "Bull:");
+			TyPositionRotation::Vector3 bullPos = TyPositionRotation::GetBullPos();
+			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", bullPos.X, bullPos.Y, bullPos.Z));
+			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetBullRot()));
 			DrawDropShadowText(drawList, ("State: " + BullStateText()).c_str());
-			DrawLabelWithNumbers(drawList, "State:", std::to_string(TyState::GetBullState()));
+			DrawLabelWithNumbers(drawList, "State ID:", std::to_string(TyState::GetBullState()));
 		}
 	}
 

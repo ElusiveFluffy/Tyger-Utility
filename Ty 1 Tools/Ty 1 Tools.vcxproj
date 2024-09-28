@@ -177,6 +177,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="TyAttributes.h" />
     <ClInclude Include="TyMemoryValues.h" />
+    <ClInclude Include="TyPositionRotation.h" />
     <ClInclude Include="TyState.h" />
   </ItemGroup>
   <ItemGroup>
