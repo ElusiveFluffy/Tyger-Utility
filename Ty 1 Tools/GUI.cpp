@@ -124,7 +124,7 @@ void GUI::RangsDrawUI()
 
 	if (ImGui::BeginTable("Rangs", 3)) {
 		//Row 1
-		ImGui::Checkbox("2nd Rang", TyAttributes::GetRangState(TyAttributes::Two));
+		ImGui::TableNextColumn(); ImGui::Checkbox("2nd Rang", TyAttributes::GetRangState(TyAttributes::Two));
 		ImGui::TableNextColumn(); ImGui::Checkbox("Swim", TyAttributes::GetRangState(TyAttributes::Swim));
 		ImGui::TableNextColumn(); ImGui::Checkbox("Dive", TyAttributes::GetRangState(TyAttributes::Dive));
 
