@@ -205,9 +205,8 @@ void GUI::Overlay::DrawOverlay()
 			TyPositionRotation::Vector3 tyPos = TyPositionRotation::GetTyPos();
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetTyRot()));
-			DrawDropShadowText(drawList, ("State: " + TyStateText()).c_str());
-			DrawLabelWithNumbers(drawList, "State ID:", std::to_string(TyState::GetTyState2()));
-			DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
+			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetTyState2()) + ") " + TyStateText()).c_str());
+			//DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
 		}
 		else
 		{
@@ -215,8 +214,7 @@ void GUI::Overlay::DrawOverlay()
 			TyPositionRotation::Vector3 bullPos = TyPositionRotation::GetBullPos();
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", bullPos.X, bullPos.Y, bullPos.Z));
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetBullRot()));
-			DrawDropShadowText(drawList, ("State: " + BullStateText()).c_str());
-			DrawLabelWithNumbers(drawList, "State ID:", std::to_string(TyState::GetBullState()));
+			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetBullState()) + ") " + BullStateText()).c_str());
 		}
 	}
 
