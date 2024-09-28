@@ -88,6 +88,10 @@ void GUI::DrawUI()
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Tip: You can drag the overlay around to place it anywhere you want");
 
+		//Is only true if the check box changes value
+		if (ImGui::Checkbox("Enable Level Select", &EnableLevelSelect))
+			TyMemoryValues::SetLevelSelect(EnableLevelSelect);
+
 		ImGui::Spacing();
 
 		if (ImGui::BeginTabBar("Tool Tabs", ImGuiTabBarFlags_Reorderable)) {

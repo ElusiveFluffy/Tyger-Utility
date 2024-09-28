@@ -33,9 +33,20 @@ public:
 		*(float*)(TyBaseAddress + 0x270B7C) = position.Y;
 		*(float*)(TyBaseAddress + 0x270B80) = position.Z;
 	};
+	static void SetLevelSelect(bool state) {
+		*(bool*)GetPointerAddress((TyBaseAddress + 0x00286CB0), Offsets::LevelSelectEnable) = state;
+		*(bool*)GetPointerAddress((TyBaseAddress + 0x00286CB0), Offsets::LevelSelectShow) = state;
+	};
 
 	static inline DWORD TyBaseAddress;
 	static void GetBaseAddress();
 	static std::vector<UINT> GetPointerAddresses(int baseAddress, std::vector<UINT> offsets);
 	static UINT GetPointerAddress(int baseAddress, UINT offset);
+
+private:
+	class Offsets {
+	public:
+		static constexpr int LevelSelectEnable = 0xCA4;
+		static constexpr int LevelSelectShow = 0xCA6;
+	};
 };

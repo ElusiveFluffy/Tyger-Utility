@@ -8,6 +8,8 @@ namespace GUI
 	static ImFont* TyFont;
 	static ImFont* TyNumberFont;
 
+	inline static bool EnableLevelSelect;
+
 	void Initialize();
 
 	void DrawUI();
