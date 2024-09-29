@@ -7,6 +7,7 @@
 #include "TyMemoryValues.h"
 #include "TyAttributes.h"
 #include "TyState.h"
+#include "TyMovement.h"
 #include "TyPositionRotation.h"
 #include "Levels.h"
 
@@ -219,10 +220,10 @@ bool GUI::ImGuiWantCaptureMouse()
 
 std::string GUI::Overlay::TyStateText() {
 	//If the map doesn't contain the state just use the ID
-	if (!TyState::Ty.contains(TyState::GetTyState2()))
-		return std::to_string(TyState::GetTyState2());
+	if (!TyState::Ty.contains(TyState::GetTyState()))
+		return std::to_string(TyState::GetTyState());
 
-	return TyState::Ty[TyState::GetTyState2()];
+	return TyState::Ty[TyState::GetTyState()];
 }
 
 std::string GUI::Overlay::BullStateText() {
@@ -266,8 +267,11 @@ void GUI::Overlay::DrawOverlay()
 			TyPositionRotation::Vector3 tyPos = TyPositionRotation::GetTyPos();
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetTyRot()));
-			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetTyState2()) + ") " + TyStateText()).c_str());
+			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetTyState()) + ") " + TyStateText()).c_str());
 			//DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
+			DrawLabelWithNumbers(drawList, "Camera State:", std::to_string(*(int*)(TyMemoryValues::TyBaseAddress + 0x27EBD0)));
+			DrawLabelWithNumbers(drawList, "Horizontal Speed:", std::format("{:.3f}", TyMovement::GetTyHorizontalSpeed()));
+			DrawLabelWithNumbers(drawList, "Vertical Speed:", std::format("{:.3f}", TyMovement::GetTyVerticalSpeed()));
 		}
 		else
 		{
@@ -276,6 +280,8 @@ void GUI::Overlay::DrawOverlay()
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", bullPos.X, bullPos.Y, bullPos.Z));
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetBullRot()));
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetBullState()) + ") " + BullStateText()).c_str());
+			DrawLabelWithNumbers(drawList, "Horizontal Speed:", std::format("{:.3f}", TyMovement::GetBullHorizontalSpeed()));
+			DrawLabelWithNumbers(drawList, "Vertical Speed:", std::format("{:.3f}", TyMovement::GetBullVerticalSpeed()));
 		}
 	}
 
