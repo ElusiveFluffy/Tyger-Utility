@@ -172,36 +172,47 @@ void GUI::MovementDrawUI()
 	{
 		ImGui::Checkbox("Disable Fall Damage", &DisableFallDamage);
 
+		ImGui::Spacing();
+		if (ImGui::Button("Give Groundswim"))
+			*TyState::GetTyStatePtr() = 39;
+
+		ImGui::Spacing();
 		if (ImGui::Button("Reset Glide Up/Down"))
 			*TyMovement::GetGlideUpDownPtr() = 5.5f;
 		ImGui::SetNextItemWidth(sliderWidth);
 		ImGui::SliderFloat("Glide Up/Down", TyMovement::GetGlideUpDownPtr(), 20, -20);
 
+		ImGui::Spacing();
 		if (ImGui::Button("Reset Glide Speed"))
 			*TyMovement::GetGlideSpeedPtr() = 7.0f;
 		ImGui::SetNextItemWidth(sliderWidth);
 		ImGui::SliderFloat("Glide Speed", TyMovement::GetGlideSpeedPtr(), 0.25f, 100);
 
+		ImGui::Spacing();
 		if (ImGui::Button("Reset Run Speed"))
 			*TyMovement::GetRunSpeedPtr() = 10.0f;
 		ImGui::SetNextItemWidth(sliderWidth);
 		ImGui::SliderFloat("Run Speed", TyMovement::GetRunSpeedPtr(), 0.25f, 100);
 
+		ImGui::Spacing();
 		if (ImGui::Button("Reset Jump Height"))
 			*TyMovement::GetGroundJumpHeightPtr() = 18.57417488f;
 		ImGui::SetNextItemWidth(sliderWidth);
 		ImGui::SliderFloat("Jump Height", TyMovement::GetGroundJumpHeightPtr(), 0.25f, 100);
 
+		ImGui::Spacing();
 		if (ImGui::Button("Reset Water Jump Height"))
 			*TyMovement::GetWaterJumpHeightPtr() = 10.67707825f;
 		ImGui::SetNextItemWidth(sliderWidth);
 		ImGui::SliderFloat("Water Jump Height", TyMovement::GetWaterJumpHeightPtr(), 0.25f, 100);
 
+		ImGui::Spacing();
 		if (ImGui::Button("Reset Airborne Speed"))
 			*TyMovement::GetAirSpeedPtr() = 10.0f;
 		ImGui::SetNextItemWidth(sliderWidth);
 		ImGui::SliderFloat("Airborne Speed", TyMovement::GetAirSpeedPtr(), 0.25f, 100);
 
+		ImGui::Spacing();
 		if (ImGui::Button("Reset Swim Surface Speed"))
 			*TyMovement::GetSwimSurfaceSpeedPtr() = 6.0f;
 		ImGui::SetNextItemWidth(sliderWidth);
