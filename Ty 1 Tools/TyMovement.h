@@ -25,6 +25,17 @@ public:
 	static float* GetBullSpeedPtr() { return (float*)(TyMemoryValues::TyBaseAddress + 0x25462C); }; //Default 35
 	static float* GetBullHardcodedSpeedPtr() { return (float*)(TyMemoryValues::TyBaseAddress + 0x43935); };
 
+	static void SetHardcodedBullSpeed() {
+		DWORD oldProtection;
+		//Change the memory access to ReadWrite to be able to change the hardcoded value (usually its read only)
+		VirtualProtect(TyMovement::GetBullHardcodedSpeedPtr(), 4, PAGE_EXECUTE_READWRITE, &oldProtection);
+		//The game sets the value used for the slider to this hardcoded value every ~2 seconds for some reason
+		*TyMovement::GetBullHardcodedSpeedPtr() = *TyMovement::GetBullSpeedPtr();
+
+		//Set it back to the old access protection
+		VirtualProtect(TyMovement::GetBullHardcodedSpeedPtr(), 4, oldProtection, &oldProtection);
+	}
+
 	static float GetBullHorizontalSpeed() {
 		//Scale them based on the direction Bull is facing, so when adding them diagonal speeds aren't wrong
 		float speed = std::abs(*(float*)(TyMemoryValues::TyBaseAddress + 0x254288) * std::sin(TyPositionRotation::GetBullRot())) + //X
