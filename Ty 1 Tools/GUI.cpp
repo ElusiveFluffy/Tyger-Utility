@@ -85,7 +85,7 @@ void GUI::DrawUI()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::SetNextWindowPos(ImVec2(60, 420), ImGuiCond_FirstUseEver);
-		ImGui::SetNextWindowSize(ImVec2(285, 240), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize(ImVec2(390, 280), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Ty 1 Tools");
 		ImGui::Checkbox("Show Debug Overlay", &Overlay::ShowOverlay);
 		ImGui::SameLine();
@@ -93,6 +93,9 @@ void GUI::DrawUI()
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Tip: You can drag the overlay around to place it anywhere you want");
 
+		//Game finished initializing
+		if (TyMemoryValues::GetTyGameState() > 4)
+		{
 		//Is only true if the check box changes value
 		if (ImGui::Checkbox("Enable Level Select", &EnableLevelSelect))
 			TyMemoryValues::SetLevelSelect(EnableLevelSelect);
@@ -104,8 +107,18 @@ void GUI::DrawUI()
 				RangsDrawUI();
 				ImGui::EndTabItem();
 			}
+				if (ImGui::BeginTabItem("Movement")) {
+					MovementDrawUI();
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Position")) {
+
+				}
 			ImGui::EndTabBar();
 		}
+		}
+		else
+			ImGui::Text("Game still initializing, please wait");
 
 		ImGui::End();
 	}
@@ -149,6 +162,54 @@ void GUI::RangsDrawUI()
 		ImGui::TableNextColumn(); ImGui::Checkbox("Doomarang", TyAttributes::GetRangState(TyAttributes::Doom));
 	}
 	ImGui::EndTable();
+}
+
+void GUI::MovementDrawUI()
+{
+	ImGui::Checkbox("Disable Fall Damage", &DisableFallDamage);
+
+	float sliderWidth = 230;
+	if (ImGui::Button("Reset Glide Up/Down"))
+		*TyMovement::GetGlideUpDownPtr() = 5.5f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Glide Up/Down", TyMovement::GetGlideUpDownPtr(), 20, -20);
+
+	if (ImGui::Button("Reset Glide Speed"))
+		*TyMovement::GetGlideSpeedPtr() = 7.0f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Glide Speed", TyMovement::GetGlideSpeedPtr(), 0.25f, 100);
+
+	if (ImGui::Button("Reset Run Speed"))
+		*TyMovement::GetRunSpeedPtr() = 10.0f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Run Speed", TyMovement::GetRunSpeedPtr(), 0.25f, 100);
+
+	if (ImGui::Button("Reset Jump Height"))
+		*TyMovement::GetGroundJumpHeightPtr() = 18.57417488f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Jump Height", TyMovement::GetGroundJumpHeightPtr(), 0.25f, 100);
+
+	if (ImGui::Button("Reset Water Jump Height"))
+		*TyMovement::GetWaterJumpHeightPtr() = 10.67707825f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Water Jump Height", TyMovement::GetWaterJumpHeightPtr(), 0.25f, 100);
+
+	if (ImGui::Button("Reset Airborne Speed"))
+		*TyMovement::GetAirSpeedPtr() = 10.0f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Airborne Speed", TyMovement::GetAirSpeedPtr(), 0.25f, 100);
+
+	if (ImGui::Button("Reset Swim Surface Speed"))
+		*TyMovement::GetSwimSurfaceSpeedPtr() = 6.0f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Swim Surface Speed", TyMovement::GetSwimSurfaceSpeedPtr(), 0.25f, 100);
+
+	if (ImGui::SliderFloat("Bull Run Speed", TyMovement::GetBullSpeedPtr(), 0.25f, 100))
+	{
+		DWORD curProtection;
+		VirtualProtect((TyMemoryValues::TyBaseAddress + 0x43935), 4, PAGE_EXECUTE_READWRITE);
+		*(float*)(TyMemoryValues::TyBaseAddress + 0x43935) = *TyMovement::GetBullSpeedPtr();
+	}
 }
 
 bool GUI::ImGuiWantCaptureMouse()

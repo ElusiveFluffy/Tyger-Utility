@@ -76,8 +76,9 @@ public:
 		{12, "Jogging"}
 	};
 
-	static int GetTyState() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x27158C); };
-	static int GetBullState() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x254560); };
+	//Seems to maybe be something that sets Ty's next state
+	static int* GetTyStatePtr() { return (int*)(TyMemoryValues::TyBaseAddress + 0x271590); };
 	//Slightly different from one, doesn't ever seem to be -1, and doesn't change to -1 at the start of a loading screen
-	static int GetTyState2() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x26EE4C); };
+	static int GetTyState() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x26EE4C); };
+	static int GetBullState() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x254560); };
 };

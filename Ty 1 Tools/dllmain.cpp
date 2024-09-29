@@ -4,6 +4,8 @@
 #include "GUI.h"
 #include <filesystem>
 #include "TyMemoryValues.h"
+#include "Levels.h"
+#include "TyState.h"
 #include "ini.h"
 namespace fs = std::filesystem;
 
@@ -79,7 +81,8 @@ void TickBeforeGame(float deltaSeconds) {
     else
         GUI::DrawUI();
 
-    //std::cout << TyMemoryValues::Get()->TyGameState() << std::endl;
+    if (GUI::DisableFallDamage && *TyState::GetTyStatePtr() == 27 && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && Levels::GetCurrentLevelID() != 10)
+        *TyState::GetTyStatePtr() = 26;
 }
 
 EXTERN_C void TygerFrameworkPluginRequiredVersion(TygerFrameworkPluginVersion* version) {

@@ -99,6 +99,9 @@
     <ClInclude Include="TyPositionRotation.h">
       <Filter>Header Files\Ty Memory Values</Filter>
     </ClInclude>
+    <ClInclude Include="TyMovement.h">
+      <Filter>Header Files\Ty Memory Values</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

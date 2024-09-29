@@ -9,11 +9,13 @@ namespace GUI
 	static ImFont* TyNumberFont;
 
 	inline bool EnableLevelSelect;
+	inline bool DisableFallDamage;
 
 	void Initialize();
 
 	void DrawUI();
 	void RangsDrawUI();
+	void MovementDrawUI();
 
 	void SetImGuiStyle();
 	bool ImGuiWantCaptureMouse();
