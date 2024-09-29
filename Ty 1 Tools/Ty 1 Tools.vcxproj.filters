@@ -102,6 +102,9 @@
     <ClInclude Include="TyMovement.h">
       <Filter>Header Files\Ty Memory Values</Filter>
     </ClInclude>
+    <ClInclude Include="Ty1Tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="TyAttributes.cpp">
       <Filter>Source Files\Ty Memory Values</Filter>
+    </ClCompile>
+    <ClCompile Include="Ty1Tools.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
