@@ -1,24 +1,25 @@
 #pragma once
 #include "imgui.h"
 #include <string>
-namespace GUI
+class GUI
 {
-	inline bool init;
-	static float FontSize = 20;
-	static ImFont* TyFont;
-	static ImFont* TyNumberFont;
+public:
+	static inline bool init;
+	static inline float FontSize = 20;
+	static inline ImFont* TyFont;
+	static inline ImFont* TyNumberFont;
 
-	inline bool EnableLevelSelect;
-	inline bool DisableFallDamage;
+	static inline bool EnableLevelSelect;
+	static inline bool DisableFallDamage;
 
-	void Initialize();
+	static void Initialize();
 
-	void DrawUI();
-	void RangsDrawUI();
-	void MovementDrawUI();
+	static void DrawUI();
+	static void RangsDrawUI();
+	static void MovementDrawUI();
 
-	void SetImGuiStyle();
-	bool ImGuiWantCaptureMouse();
+	static void SetImGuiStyle();
+	static bool ImGuiWantCaptureMouse();
 
 	class Overlay {
 	public:
@@ -37,5 +38,8 @@ namespace GUI
 		static std::string TyStateText();
 		static std::string BullStateText();
 	};
+
+private:
+	static inline void AddToolTip(const char* toolTip);
 };
 

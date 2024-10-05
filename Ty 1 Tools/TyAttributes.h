@@ -4,6 +4,8 @@ class TyAttributes
 {
 public:
 	static void SetAllRangs(bool newValue);
+	static void SetElementRangs(bool newValue);
+	static void SetTechnoRangs(bool newValue);
 
 	enum Rangs {
 		Two,

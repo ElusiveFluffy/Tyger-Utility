@@ -89,10 +89,7 @@ void GUI::DrawUI()
 		ImGui::SetNextWindowSize(ImVec2(390, 280), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Ty 1 Tools");
 		ImGui::Checkbox("Show Debug Overlay", &Overlay::ShowOverlay);
-		ImGui::SameLine();
-		ImGui::Text("(?)");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Tip: You can drag the overlay around to place it anywhere you want");
+		AddToolTip("Tip: You can drag the overlay around to place it anywhere you want\nThe overlay only shows during gameplay");
 
 		//Game finished initializing
 		if (TyMemoryValues::GetTyGameState() > 4)
@@ -114,6 +111,7 @@ void GUI::DrawUI()
 				}
 				if (ImGui::BeginTabItem("Position")) {
 
+					ImGui::EndTabItem();
 				}
 				ImGui::EndTabBar();
 			}
@@ -135,6 +133,12 @@ void GUI::RangsDrawUI()
 	ImGui::SameLine();
 	if (ImGui::Button("Remove All Rangs"))
 		TyAttributes::SetAllRangs(false);
+
+	if (ImGui::Button("Give Element Rangs"))
+		TyAttributes::SetElementRangs(true);
+	ImGui::SameLine();
+	if (ImGui::Button("Give Techno Rangs"))
+		TyAttributes::SetTechnoRangs(true);
 
 	if (ImGui::BeginTable("Rangs", 3)) {
 		//Row 1
@@ -171,6 +175,7 @@ void GUI::MovementDrawUI()
 	if (Levels::GetCurrentLevelID() != 10)
 	{
 		ImGui::Checkbox("Disable Fall Damage", &DisableFallDamage);
+		AddToolTip("Also disables the long fall animation");
 
 		ImGui::Spacing();
 		if (ImGui::Button("Give Groundswim"))
@@ -232,6 +237,14 @@ void GUI::MovementDrawUI()
 			TyMovement::SetHardcodedBullSpeed();
 		}
 	}
+}
+
+void GUI::AddToolTip(const char* toolTip)
+{
+	ImGui::SameLine();
+	ImGui::Text("(?)");
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip(toolTip);
 }
 
 bool GUI::ImGuiWantCaptureMouse()

@@ -10,6 +10,26 @@ void TyAttributes::SetAllRangs(bool newValue)
 	}
 }
 
+void TyAttributes::SetElementRangs(bool newValue)
+{
+	std::vector<UINT> addresses = TyMemoryValues::GetPointerAddresses(RangBaseAddress(),
+		{ RangOffsets::Dive, RangOffsets::Swim, RangOffsets::Two, RangOffsets::Aqua, RangOffsets::Frosty, RangOffsets::Flame, RangOffsets::Zappy });
+
+	for (UINT address : addresses) {
+		*(bool*)address = newValue;
+	}
+}
+
+void TyAttributes::SetTechnoRangs(bool newValue)
+{
+	std::vector<UINT> addresses = TyMemoryValues::GetPointerAddresses(RangBaseAddress(),
+		{ RangOffsets::Kaboom, RangOffsets::Doom, RangOffsets::Mega, RangOffsets::Zoomer, RangOffsets::Infra, RangOffsets::Multi, RangOffsets::Chrono });
+
+	for (UINT address : addresses) {
+		*(bool*)address = newValue;
+	}
+}
+
 bool* TyAttributes::GetRangState(Rangs rang)
 {
 	UINT offset = 0;
