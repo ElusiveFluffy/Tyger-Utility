@@ -5,6 +5,7 @@
 //Ty Memory
 #include "TyMemoryValues.h"
 #include "TyMovement.h"
+#include "TyAttributes.h"
 #include "TyState.h"
 #include "Levels.h"
 
@@ -13,6 +14,9 @@ namespace fs = std::filesystem;
 
 void Ty1Tools::TickBeforeGame(float deltaSeconds)
 {
+    //Update it after Ty uses a charge bite in game
+    GUI::ChargeBiteCount = *TyAttributes::GetChargeBiteOpalCounterPtr() / 100;
+
     if (!GUI::init)
         GUI::Initialize();
     else

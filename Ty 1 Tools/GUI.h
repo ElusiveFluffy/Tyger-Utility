@@ -11,12 +11,15 @@ public:
 
 	static inline bool EnableLevelSelect;
 	static inline bool DisableFallDamage;
+	//Mostly used for the count in the UI and to easily set the amount of charge bites
+	static inline ImU8 ChargeBiteCount;
 
 	static void Initialize();
 
 	static void DrawUI();
 	static void RangsDrawUI();
 	static void MovementDrawUI();
+	static void MiscDrawUI();
 
 	static void SetImGuiStyle();
 	static bool ImGuiWantCaptureMouse();

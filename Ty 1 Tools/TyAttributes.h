@@ -26,6 +26,7 @@ public:
 	};
 
 	static bool* GetRangState(Rangs rang);
+	static int* GetChargeBiteOpalCounterPtr() { return (int*)(TyMemoryValues::TyBaseAddress + 0x2888B4); };
 
 private:
 	class RangOffsets {

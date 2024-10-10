@@ -113,6 +113,10 @@ void GUI::DrawUI()
 
 					ImGui::EndTabItem();
 				}
+				if (ImGui::BeginTabItem("Misc")) {
+					MiscDrawUI();
+					ImGui::EndTabItem();
+				}
 				ImGui::EndTabBar();
 			}
 		}
@@ -237,6 +241,13 @@ void GUI::MovementDrawUI()
 			TyMovement::SetHardcodedBullSpeed();
 		}
 	}
+}
+
+void GUI::MiscDrawUI()
+{
+	bool showStepButtons = true;
+	if (ImGui::InputScalar("Charge Bite Count", ImGuiDataType_U8, &ChargeBiteCount, &showStepButtons))
+		*TyAttributes::GetChargeBiteOpalCounterPtr() = ChargeBiteCount * 100;
 }
 
 void GUI::AddToolTip(const char* toolTip)
