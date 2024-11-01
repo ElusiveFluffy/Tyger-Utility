@@ -6,16 +6,14 @@
 class TyMemoryValues {
 public:
 	enum GameState {
-		NoWindow = 0, //Maybe
+		NoWindow = 0, //or just no state
 		StartUp = 1,
-		Unknown = 2,
 		Init = 3,
-		Unknown2 = 4,
+		MainGameInit = 4, //Maybe
 		Gameplay = 5,
-		Unknown3 = 6,
-		Unknown4 = 7,
-		TitleScreen = 8,
-		LoadingScreen = 9
+		TitleScreenOrFMV = 8,
+		LoadingScreen = 9,
+		ShuttingDown = 12 //Only if quit with the quit button on the main menu
 	};
 	//Get
 	static GameState GetTyGameState() { return *(GameState*)(TyBaseAddress + 0x288A6C); };
