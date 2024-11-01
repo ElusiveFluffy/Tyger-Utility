@@ -86,8 +86,8 @@ void GUI::DrawUI()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::SetNextWindowPos(ImVec2(60, 420), ImGuiCond_FirstUseEver);
-		ImGui::SetNextWindowSize(ImVec2(390, 280), ImGuiCond_FirstUseEver);
-		ImGui::Begin("Ty 1 Tools");
+		ImGui::SetNextWindowSize(ImVec2(390, 340), ImGuiCond_FirstUseEver);
+		ImGui::Begin("Ty 1 Modding Util");
 		ImGui::Checkbox("Show Debug Overlay", &Overlay::ShowOverlay);
 		AddToolTip("Tip: You can drag the overlay around to place it anywhere you want\nThe overlay only shows during gameplay");
 
