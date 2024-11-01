@@ -1,16 +1,16 @@
 #pragma once
 #include "imgui.h"
+#include "TyPositionRotation.h"
 #include <string>
 class GUI
 {
 public:
 	static inline bool init;
-	static inline float FontSize = 20;
-	static inline ImFont* TyFont;
-	static inline ImFont* TyNumberFont;
 
 	static inline bool EnableLevelSelect;
 	static inline bool DisableFallDamage;
+	static inline bool AutoSetPosition;
+	static inline bool DontAutoUpdatePosition;
 	//Mostly used for the count in the UI and to easily set the amount of charge bites
 	static inline ImU8 ChargeBiteCount;
 
@@ -19,6 +19,7 @@ public:
 	static void DrawUI();
 	static void RangsDrawUI();
 	static void MovementDrawUI();
+	static void PositionDrawUI();
 	static void MiscDrawUI();
 
 	static void SetImGuiStyle();
@@ -43,6 +44,17 @@ public:
 	};
 
 private:
+	static inline float FontSize = 20;
+	static inline ImFont* TyFont;
+	static inline ImFont* TyNumberFont;
+
+	static inline int IntStepAmount = 1;
+	static inline float FloatStepAmount = 10.0f;
+
+	//Position
+	static inline TyPositionRotation::Vector3 TyBullPos;
+	static inline bool AnyChanged;
+
 	static inline void AddToolTip(const char* toolTip);
 };
 

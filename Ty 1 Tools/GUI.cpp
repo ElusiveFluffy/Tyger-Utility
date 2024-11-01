@@ -110,7 +110,7 @@ void GUI::DrawUI()
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Position")) {
-
+					PositionDrawUI();
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Misc")) {
@@ -243,10 +243,58 @@ void GUI::MovementDrawUI()
 	}
 }
 
+void GUI::PositionDrawUI()
+{
+	ImGui::Checkbox("Auto Teleport", &AutoSetPosition);
+	AddToolTip("Automatically set's Ty/Bull's position when they're edited");
+	ImGui::SameLine();
+	ImGui::Checkbox("Don't Auto Update Position", &DontAutoUpdatePosition);
+	ImGui::InputScalar("Step Amount", ImGuiDataType_Float, &FloatStepAmount);
+	AddToolTip("Sets the amount the -/+ buttons add or subtract");
+	if (Levels::GetCurrentLevelID() != 10)
+	{
+		//Only auto update it if none have changed
+		if (!AnyChanged && !DontAutoUpdatePosition)
+			TyBullPos = TyPositionRotation::GetTyPos();
+		ImGui::Text("Ty Position:");
+		//Or just so if any have previously changed it'll keep it true
+		AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
+		AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
+		AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
+		if (ImGui::Button("Teleport") || (AutoSetPosition && AnyChanged))
+		{
+			TyPositionRotation::SetTyPos(TyBullPos);
+			AnyChanged = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Update Position"))
+			TyBullPos = TyPositionRotation::GetTyPos();
+	}
+	else
+	{
+		//Only auto update it if none have changed
+		if (!AnyChanged && !DontAutoUpdatePosition)
+			TyBullPos = TyPositionRotation::GetBullPos();
+		ImGui::Text("Bull Position:");
+		//Or just so if any have previously changed it'll keep it true
+		AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
+		AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
+		AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
+		if (ImGui::Button("Teleport") || (AutoSetPosition && AnyChanged))
+		{
+			TyPositionRotation::SetBullPos(TyBullPos);
+			AnyChanged = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Update Position"))
+			TyBullPos = TyPositionRotation::GetBullPos();
+	}
+
+}
+
 void GUI::MiscDrawUI()
 {
-	bool showStepButtons = true;
-	if (ImGui::InputScalar("Charge Bite Count", ImGuiDataType_U8, &ChargeBiteCount, &showStepButtons))
+	if (ImGui::InputScalar("Charge Bite Count", ImGuiDataType_U8, &ChargeBiteCount, &IntStepAmount))
 		*TyAttributes::GetChargeBiteOpalCounterPtr() = ChargeBiteCount * 100;
 }
 
