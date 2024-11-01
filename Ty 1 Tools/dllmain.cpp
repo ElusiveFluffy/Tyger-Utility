@@ -3,7 +3,7 @@
 #include "TygerFrameworkAPI.hpp"
 #include "GUI.h"
 #include "TyMemoryValues.h"
-#include "Ty1Tools.h"
+#include "Ty1ModdingUtil.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,

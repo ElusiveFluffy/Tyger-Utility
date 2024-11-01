@@ -182,7 +182,7 @@
     <ClInclude Include="Include\TygerFrameworkAPI.hpp" />
     <ClInclude Include="Levels.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Ty1Tools.h" />
+    <ClInclude Include="Ty1ModdingUtil.h" />
     <ClInclude Include="TyAttributes.h" />
     <ClInclude Include="TyMemoryValues.h" />
     <ClInclude Include="TyMovement.h" />
@@ -204,7 +204,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Ty1Tools.cpp" />
+    <ClCompile Include="Ty1ModdingUtil.cpp" />
     <ClCompile Include="TyAttributes.cpp" />
     <ClCompile Include="TyMemoryValues.cpp" />
   </ItemGroup>

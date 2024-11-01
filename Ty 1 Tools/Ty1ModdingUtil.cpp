@@ -1,4 +1,4 @@
-#include "Ty1Tools.h"
+#include "Ty1ModdingUtil.h"
 #include "GUI.h"
 #include "ini.h"
 #include <filesystem>
@@ -12,7 +12,7 @@
 #include "TygerFrameworkAPI.hpp"
 namespace fs = std::filesystem;
 
-void Ty1Tools::TickBeforeGame(float deltaSeconds)
+void Ty1ModdingUtil::TickBeforeGame(float deltaSeconds)
 {
     //Update it after Ty uses a charge bite in game
     GUI::ChargeBiteCount = *TyAttributes::GetChargeBiteOpalCounterPtr() / 100;
@@ -26,14 +26,14 @@ void Ty1Tools::TickBeforeGame(float deltaSeconds)
         *TyState::GetTyStatePtr() = 26;
 }
 
-void Ty1Tools::OnTyInit() {
+void Ty1ModdingUtil::OnTyInit() {
     //Will be set when reaching the title screen or gameplay (5 or 8)
     TyMemoryValues::SetLevelSelect(GUI::EnableLevelSelect);
     API::LogPluginMessage("Startup Set Level Select State");
     *TyMovement::GetBullSpeedPtr() = 35.0f;
 }
 
-void Ty1Tools::SaveSettings() {
+void Ty1ModdingUtil::SaveSettings() {
     ini::File settings;
 
     //Create Ty 1 Tools section
@@ -42,16 +42,16 @@ void Ty1Tools::SaveSettings() {
     settings["Ty 1 Tools"].set<bool>("ShowOverlay", GUI::Overlay::ShowOverlay);
     settings["Ty 1 Tools"].set<bool>("EnableLevelSelect", GUI::EnableLevelSelect);
 
-    settings.write("Plugins/Ty 1 Tools.ini");
+    settings.write(API::GetPluginDirectory() / "Ty 1 Tools.ini");
 
     API::LogPluginMessage("Saved Settings to ini");
 }
 
-void Ty1Tools::LoadSettings() {
-    if (!fs::exists("Plugins/Ty 1 Tools.ini"))
+void Ty1ModdingUtil::LoadSettings() {
+    if (!fs::exists(API::GetPluginDirectory() / "Ty 1 Tools.ini"))
         return;
 
-    ini::File settings = ini::open("Plugins/Ty 1 Tools.ini");
+    ini::File settings = ini::open(API::GetPluginDirectory() / "Ty 1 Tools.ini");
 
     if (settings.has_section("Ty 1 Tools")) {
         ini::Section ty1ToolsSection = settings["Ty 1 Tools"];
