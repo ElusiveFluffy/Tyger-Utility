@@ -18,7 +18,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         break;
     case DLL_PROCESS_DETACH:
         if (API::IsInitialized())
-        Ty1Tools::SaveSettings();
+            Ty1Tools::SaveSettings();
         break;
     }
     return TRUE;
@@ -47,7 +47,7 @@ EXTERN_C bool TygerFrameworkPluginInitialize(TygerFrameworkPluginInitializeParam
 
     API::AddTickBeforeGame(Ty1Tools::TickBeforeGame);
 
-    CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Ty1Tools::CheckIfGameFinishInit, NULL, 0, nullptr);
+    API::AddOnTyInitialized(Ty1Tools::OnTyInit);
 
     return true;
 }

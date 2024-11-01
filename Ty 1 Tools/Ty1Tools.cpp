@@ -26,11 +26,7 @@ void Ty1Tools::TickBeforeGame(float deltaSeconds)
         *TyState::GetTyStatePtr() = 26;
 }
 
-void Ty1Tools::CheckIfGameFinishInit() {
-    //Just waiting for the game to startup, values below 5 are all uses before fully initialized
-    while (TyMemoryValues::GetTyGameState() < 5) {
-        Sleep(100);
-    }
+void Ty1Tools::OnTyInit() {
     //Will be set when reaching the title screen or gameplay (5 or 8)
     TyMemoryValues::SetLevelSelect(GUI::EnableLevelSelect);
     API::LogPluginMessage("Startup Set Level Select State");
