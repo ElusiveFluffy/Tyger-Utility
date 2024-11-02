@@ -3,9 +3,10 @@
 #include <string>
 #include "TyMemoryValues.h"
 
-class TyState {
-public:
-	static inline std::map<int, std::string> Ty{
+using namespace TyMemoryValues;
+
+namespace TyState {
+	inline std::map<int, std::string> Ty{
 		{-1, "Null"},
 		{0, "No State"},
 		{1, "Biting"},
@@ -59,7 +60,7 @@ public:
 		{52, "Rex Diving"}
 	};
 
-	static inline std::map<int, std::string> Bull{
+	inline std::map<int, std::string> Bull{
 		{-1, "No State"},
 		{0, "Idle"},
 		{1, "Walking"},
@@ -77,8 +78,8 @@ public:
 	};
 
 	//Seems to maybe be something that sets Ty's next state
-	static int* GetTyStatePtr() { return (int*)(TyMemoryValues::TyBaseAddress + 0x271590); };
+	inline int* GetTyStatePtr() { return (int*)(TyBaseAddress + 0x271590); };
 	//Slightly different from one, doesn't ever seem to be -1, and doesn't change to -1 at the start of a loading screen
-	static int GetTyState() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x26EE4C); };
-	static int GetBullState() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x254560); };
+	inline int GetTyState() { return *(int*)(TyBaseAddress + 0x26EE4C); };
+	inline int GetBullState() { return *(int*)(TyBaseAddress + 0x254560); };
 };

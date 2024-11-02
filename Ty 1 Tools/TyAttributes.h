@@ -1,5 +1,8 @@
 #pragma once
 #include "TyMemoryValues.h"
+
+using namespace TyMemoryValues;
+
 class TyAttributes
 {
 public:
@@ -26,7 +29,7 @@ public:
 	};
 
 	static bool* GetRangState(Rangs rang);
-	static int* GetChargeBiteOpalCounterPtr() { return (int*)(TyMemoryValues::TyBaseAddress + 0x2888B4); };
+	static int* GetChargeBiteOpalCounterPtr() { return (int*)(TyBaseAddress + 0x2888B4); };
 
 private:
 	class RangOffsets {
@@ -47,6 +50,6 @@ private:
 		static constexpr int Chrono = 0xAC3;
 		static constexpr int Doom = 0xABC;
 	};
-	static int RangBaseAddress() { return TyMemoryValues::TyBaseAddress + 0x288730; };
+	static int RangBaseAddress() { return TyBaseAddress + 0x288730; };
 };
 

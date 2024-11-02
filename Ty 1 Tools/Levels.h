@@ -1,8 +1,8 @@
 #pragma once
 #include "TyMemoryValues.h"
 
-class Levels {
-public:
+using namespace TyMemoryValues;
 
-	static int GetCurrentLevelID() { return *(int*)(TyMemoryValues::TyBaseAddress + 0x280594); }
+namespace Levels {
+	static int GetCurrentLevelID() { return *(int*)(TyBaseAddress + 0x280594); }
 };
