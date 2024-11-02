@@ -18,7 +18,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         break;
     case DLL_PROCESS_DETACH:
         if (API::IsInitialized())
-            Ty1Tools::SaveSettings();
+            Ty1ModdingUtil::SaveSettings();
         break;
     }
     return TRUE;
@@ -37,7 +37,7 @@ EXTERN_C bool TygerFrameworkPluginInitialize(TygerFrameworkPluginInitializeParam
 
     API::Initialize(param);
 
-    Ty1Tools::LoadSettings();
+    Ty1ModdingUtil::LoadSettings();
 
     TyMemoryValues::GetBaseAddress();
 
@@ -45,9 +45,9 @@ EXTERN_C bool TygerFrameworkPluginInitialize(TygerFrameworkPluginInitializeParam
     //Make sure to cast this, otherwise TygerFramework won't get the return value
     API::AddPluginImGuiWantCaptureMouse((ImGuiWantCaptureMouseFunc)GUI::ImGuiWantCaptureMouse);
 
-    API::AddTickBeforeGame(Ty1Tools::TickBeforeGame);
+    API::AddTickBeforeGame(Ty1ModdingUtil::TickBeforeGame);
 
-    API::AddOnTyInitialized(Ty1Tools::OnTyInit);
+    API::AddOnTyInitialized(Ty1ModdingUtil::OnTyInit);
 
     return true;
 }
