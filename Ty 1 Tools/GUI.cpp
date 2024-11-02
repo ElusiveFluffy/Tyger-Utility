@@ -296,6 +296,8 @@ void GUI::MiscDrawUI()
 {
 	if (ImGui::InputScalar("Charge Bite Count", ImGuiDataType_U8, &ChargeBiteCount, &IntStepAmount))
 		*TyAttributes::GetChargeBiteOpalCounterPtr() = ChargeBiteCount * 100;
+
+	ImGui::Checkbox("Ty Invincibility", TyState::TyInvincibility());
 }
 
 void GUI::AddToolTip(const char* toolTip)
