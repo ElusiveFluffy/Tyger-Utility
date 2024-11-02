@@ -1,5 +1,6 @@
 #include "GUI.h"
 #include "framework.h"
+#include "TygerFrameworkAPI.hpp"
 #include <string>
 #include <format>
 
@@ -10,6 +11,7 @@
 #include "TyMovement.h"
 #include "TyPositionRotation.h"
 #include "Levels.h"
+using namespace TyPositionRotation;
 
 //Fonts
 #include "Fonts/TyFont.hpp"
@@ -19,8 +21,6 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_win32.h"
 #include "imgui_internal.h" //For Free Drawing
-
-#include "TygerFrameworkAPI.hpp"
 
 //WndProc to be able to interact with imgui or block any WndProc from interacting with the Ty window
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

@@ -2,28 +2,41 @@
 #include "imgui.h"
 #include "TyPositionRotation.h"
 #include <string>
-class GUI
+
+namespace GUI
 {
-public:
-	static inline bool init;
+	inline bool init;
 
-	static inline bool EnableLevelSelect;
-	static inline bool DisableFallDamage;
-	static inline bool AutoSetPosition;
-	static inline bool DontAutoUpdatePosition;
+	inline bool EnableLevelSelect;
+	inline bool DisableFallDamage;
+	inline bool AutoSetPosition;
+	inline bool DontAutoUpdatePosition;
 	//Mostly used for the count in the UI and to easily set the amount of charge bites
-	static inline ImU8 ChargeBiteCount;
+	inline ImU8 ChargeBiteCount;
 
-	static void Initialize();
+	inline float FontSize = 20;
+	inline ImFont* TyFont;
+	inline ImFont* TyNumberFont;
 
-	static void DrawUI();
-	static void RangsDrawUI();
-	static void MovementDrawUI();
-	static void PositionDrawUI();
-	static void MiscDrawUI();
+	inline int IntStepAmount = 1;
+	inline float FloatStepAmount = 10.0f;
 
-	static void SetImGuiStyle();
-	static bool ImGuiWantCaptureMouse();
+	//Position
+	inline TyPositionRotation::Vector3 TyBullPos;
+	inline bool AnyChanged;
+
+	void AddToolTip(const char* toolTip);
+
+	void Initialize();
+
+	void DrawUI();
+	void RangsDrawUI();
+	void MovementDrawUI();
+	void PositionDrawUI();
+	void MiscDrawUI();
+
+	void SetImGuiStyle();
+	bool ImGuiWantCaptureMouse();
 
 	class Overlay {
 	public:
@@ -35,7 +48,7 @@ public:
 
 		static void DrawOverlay();
 		static void DrawLabelWithNumbers(ImDrawList* drawList, std::string label, std::string numberText);
-		static void DrawDropShadowText(ImDrawList* drawList, const char* text, bool addNewLine = true, ImVec2 positionOffset = ImVec2(0, 0), ImFont* font = GUI::TyFont);
+		static void DrawDropShadowText(ImDrawList* drawList, const char* text, bool addNewLine = true, ImVec2 positionOffset = ImVec2(0, 0), ImFont* font = TyFont);
 
 	private:
 		//States
@@ -43,18 +56,4 @@ public:
 		static std::string BullStateText();
 	};
 
-private:
-	static inline float FontSize = 20;
-	static inline ImFont* TyFont;
-	static inline ImFont* TyNumberFont;
-
-	static inline int IntStepAmount = 1;
-	static inline float FloatStepAmount = 10.0f;
-
-	//Position
-	static inline TyPositionRotation::Vector3 TyBullPos;
-	static inline bool AnyChanged;
-
-	static inline void AddToolTip(const char* toolTip);
 };
-
