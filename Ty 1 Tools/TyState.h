@@ -82,4 +82,16 @@ namespace TyState {
 	//Slightly different from one, doesn't ever seem to be -1, and doesn't change to -1 at the start of a loading screen
 	inline int GetTyState() { return *(int*)(TyBaseAddress + 0x26EE4C); };
 	inline int GetBullState() { return *(int*)(TyBaseAddress + 0x254560); };
+
+	//Ty's anim pointer is only null while in outback but it never gets read then so its fine
+	inline const char* GetTyAnimationName() { return (char*)*(int*)*(int*)(TyBaseAddress + 0x271014); }
+	inline const char* GetBullAnimationName() { 
+		//Store the first pointer
+		int firstPointer = *(int*)(TyBaseAddress + 0x2546DC);
+		//Make sure its not null (Bull's pointer is null while the level intro cutscene is playing)
+		if (firstPointer != NULL)
+			return (char*)*(int*)firstPointer;
+		//Just use the pointer for Ty's null state text
+		return Ty[-1].c_str();
+	}
 };

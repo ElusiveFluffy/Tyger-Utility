@@ -311,6 +311,27 @@ bool GUI::ImGuiWantCaptureMouse()
 	return ImGui::GetIO().WantCaptureMouse;
 }
 
+std::string GUI::Overlay::AddSpacesBeforeCapitalAndNum(std::string text)
+{
+	std::string new_str = "";
+	bool lastCharWasNumber = false;
+	//Iterate through the characters in the string (except the last character)
+	for (UINT i = 0; i < (text.length() - 1); i++) {
+		new_str += text[i]; // Append the current character to the new string
+
+		bool isNum = isdigit(text[i + 1]);
+		//Check if the next character is uppercase or a number, group numbers together
+		if (isupper(text[i + 1]) || (!lastCharWasNumber && isNum)) {
+			//If the next character is uppercase, insert a space in the new string
+			new_str += " ";
+			lastCharWasNumber = isNum;
+		}
+	}
+	//Append the last character of the input string to the new string
+	new_str += text.back();
+	return new_str;
+}
+
 std::string GUI::Overlay::TyStateText() {
 	//If the map doesn't contain the state just use the ID
 	if (!TyState::Ty.contains(TyState::GetTyState()))
@@ -357,10 +378,14 @@ void GUI::Overlay::DrawOverlay()
 		if (Levels::GetCurrentLevelID() != 10)
 		{
 			DrawDropShadowText(drawList, "Ty:");
-			TyPositionRotation::Vector3 tyPos = TyPositionRotation::GetTyPos();
+			Vector3 tyPos = TyPositionRotation::GetTyPos();
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetTyRot()));
+
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetTyState()) + ") " + TyStateText()).c_str());
+			std::string tyAnimText = AddSpacesBeforeCapitalAndNum(std::string(TyState::GetTyAnimationName()));
+			DrawDropShadowText(drawList, ("Anim: " + tyAnimText).c_str());
+
 			//DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
 			DrawLabelWithNumbers(drawList, "Camera State:", std::to_string(*(int*)(TyMemoryValues::TyBaseAddress + 0x27EBD0)));
 			DrawLabelWithNumbers(drawList, "Horizontal Speed:", std::format("{:.3f}", TyMovement::GetTyHorizontalSpeed()));
@@ -369,10 +394,14 @@ void GUI::Overlay::DrawOverlay()
 		else
 		{
 			DrawDropShadowText(drawList, "Bull:");
-			TyPositionRotation::Vector3 bullPos = TyPositionRotation::GetBullPos();
+			Vector3 bullPos = TyPositionRotation::GetBullPos();
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", bullPos.X, bullPos.Y, bullPos.Z));
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetBullRot()));
+
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetBullState()) + ") " + BullStateText()).c_str());
+			std::string bullAnimText = AddSpacesBeforeCapitalAndNum(std::string(TyState::GetBullAnimationName()));
+			DrawDropShadowText(drawList, ("Anim: " + bullAnimText).c_str());
+
 			DrawLabelWithNumbers(drawList, "Horizontal Speed:", std::format("{:.3f}", TyMovement::GetBullHorizontalSpeed()));
 			DrawLabelWithNumbers(drawList, "Vertical Speed:", std::format("{:.3f}", TyMovement::GetBullVerticalSpeed()));
 		}

@@ -51,6 +51,7 @@ namespace GUI
 		static void DrawDropShadowText(ImDrawList* drawList, const char* text, bool addNewLine = true, ImVec2 positionOffset = ImVec2(0, 0), ImFont* font = TyFont);
 
 	private:
+		static std::string AddSpacesBeforeCapitalAndNum(std::string text);
 		//States
 		static std::string TyStateText();
 		static std::string BullStateText();
