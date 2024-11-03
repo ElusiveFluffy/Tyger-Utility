@@ -376,6 +376,7 @@ void GUI::MiscDrawUI()
 		*TyAttributes::GetChargeBiteOpalCounterPtr() = ChargeBiteCount * 100;
 
 	ImGui::Checkbox("Ty Invincibility", TyState::TyInvincibility());
+	AddToolTip("Only affects Ty, doesn't affect Bull");
 }
 
 void GUI::AddToolTip(const char* toolTip)
