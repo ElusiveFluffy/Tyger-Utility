@@ -41,25 +41,25 @@ void Ty1ModdingUtil::OnTyInit() {
 void Ty1ModdingUtil::SaveSettings() {
     ini::File settings;
 
-    //Create Ty 1 Tools section
-    settings.add_section("Ty 1 Tools");
+    //Create Ty 1 Modding Util section
+    settings.add_section(PluginName);
     //Save the data, [Section name], (Value name, value)
-    settings["Ty 1 Tools"].set<bool>("ShowOverlay", GUI::Overlay::ShowOverlay);
-    settings["Ty 1 Tools"].set<bool>("EnableLevelSelect", GUI::EnableLevelSelect);
+    settings[PluginName].set<bool>("ShowOverlay", GUI::Overlay::ShowOverlay);
+    settings[PluginName].set<bool>("EnableLevelSelect", GUI::EnableLevelSelect);
 
-    settings.write(API::GetPluginDirectory() / "Ty 1 Tools.ini");
+    settings.write(API::GetPluginDirectory() / (PluginName + ".ini"));
 
     API::LogPluginMessage("Saved Settings to ini");
 }
 
 void Ty1ModdingUtil::LoadSettings() {
-    if (!fs::exists(API::GetPluginDirectory() / "Ty 1 Tools.ini"))
+    if (!fs::exists(API::GetPluginDirectory() / (PluginName + ".ini")))
         return;
 
-    ini::File settings = ini::open(API::GetPluginDirectory() / "Ty 1 Tools.ini");
+    ini::File settings = ini::open(API::GetPluginDirectory() / (PluginName + ".ini"));
 
-    if (settings.has_section("Ty 1 Tools")) {
-        ini::Section ty1ToolsSection = settings["Ty 1 Tools"];
+    if (settings.has_section(PluginName)) {
+        ini::Section ty1ToolsSection = settings[PluginName];
 
         if (ty1ToolsSection.has_key("ShowOverlay"))
             GUI::Overlay::ShowOverlay = ty1ToolsSection.get<bool>("ShowOverlay");
