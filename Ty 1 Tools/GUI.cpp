@@ -180,7 +180,6 @@ void GUI::RangsDrawUI()
 
 void GUI::MovementDrawUI()
 {
-	float sliderWidth = 230;
 	if (Levels::GetCurrentLevelID() != 10)
 	{
 		ImGui::Checkbox("Disable Fall Damage", &DisableFallDamage);
@@ -370,19 +369,28 @@ std::string GUI::Overlay::AddSpacesBeforeCapitalAndNum(std::string text)
 }
 
 std::string GUI::Overlay::TyStateText() {
-	//If the map doesn't contain the state just use the ID
+	//If the map doesn't contain the state just return a blank string
 	if (!TyState::Ty.contains(TyState::GetTyState()))
-		return std::to_string(TyState::GetTyState());
+		return "";
 
 	return TyState::Ty[TyState::GetTyState()];
 }
 
 std::string GUI::Overlay::BullStateText() {
-	//If the map doesn't contain the state just use the ID
+	//If the map doesn't contain the state just return a blank string
 	if (!TyState::Bull.contains(TyState::GetBullState()))
-		return std::to_string(TyState::GetBullState());
+		return "";
 
 	return TyState::Bull[TyState::GetBullState()];
+}
+
+std::string GUI::Overlay::CameraStateText()
+{
+	//If the map doesn't contain the state just return a blank string
+	if (!Camera::StateNames.contains(Camera::GetCameraState()))
+		return "";
+
+	return Camera::StateNames[Camera::GetCameraState()];
 }
 
 void GUI::Overlay::DrawOverlay()
@@ -422,9 +430,9 @@ void GUI::Overlay::DrawOverlay()
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetTyState()) + ") " + TyStateText()).c_str());
 			std::string tyAnimText = AddSpacesBeforeCapitalAndNum(std::string(TyState::GetTyAnimationName()));
 			DrawDropShadowText(drawList, ("Anim: " + tyAnimText).c_str());
-
 			//DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
-			DrawLabelWithNumbers(drawList, "Camera State:", std::to_string(*(int*)(TyMemoryValues::TyBaseAddress + 0x27EBD0)));
+			DrawDropShadowText(drawList, ("Camera State: (" + std::to_string(Camera::GetCameraState()) + ") " + CameraStateText()).c_str());
+
 			DrawLabelWithNumbers(drawList, "Horizontal Speed:", std::format("{:.3f}", TyMovement::GetTyHorizontalSpeed()));
 			DrawLabelWithNumbers(drawList, "Vertical Speed:", std::format("{:.3f}", TyMovement::GetTyVerticalSpeed()));
 		}
@@ -438,6 +446,7 @@ void GUI::Overlay::DrawOverlay()
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetBullState()) + ") " + BullStateText()).c_str());
 			std::string bullAnimText = AddSpacesBeforeCapitalAndNum(std::string(TyState::GetBullAnimationName()));
 			DrawDropShadowText(drawList, ("Anim: " + bullAnimText).c_str());
+			DrawDropShadowText(drawList, ("Camera State: (" + std::to_string(Camera::GetCameraState()) + ") " + CameraStateText()).c_str());
 
 			DrawLabelWithNumbers(drawList, "Horizontal Speed:", std::format("{:.3f}", TyMovement::GetBullHorizontalSpeed()));
 			DrawLabelWithNumbers(drawList, "Vertical Speed:", std::format("{:.3f}", TyMovement::GetBullVerticalSpeed()));

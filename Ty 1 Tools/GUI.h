@@ -60,6 +60,8 @@ namespace GUI
 		//States
 		static std::string TyStateText();
 		static std::string BullStateText();
+
+		static std::string CameraStateText();
 	};
 
 };
