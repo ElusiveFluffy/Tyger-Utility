@@ -33,9 +33,5 @@ namespace TyMemoryValues {
 		*(bool*)GetPointerAddress((TyBaseAddress + 0x00286CB0), Offsets::LevelSelectEnable) = state;
 		*(bool*)GetPointerAddress((TyBaseAddress + 0x00286CB0), Offsets::LevelSelectShow) = state;
 	};
-	inline void SetCameraState(int cameraState) {
-		*(int*)(TyBaseAddress + 0x27EBD0) = 28;
-		*(int*)(TyBaseAddress + 0x27EBC8) = 28;
-	}
 	inline int SetHiddenOpalCounter(int amount) { *(int*)(TyBaseAddress + 0x2888B4) = amount; };
 };

@@ -10,6 +10,7 @@
 #include "TyState.h"
 #include "TyMovement.h"
 #include "TyPositionRotation.h"
+#include "Camera.h"
 #include "Levels.h"
 using namespace TyPositionRotation;
 
@@ -111,6 +112,10 @@ void GUI::DrawUI()
 				}
 				if (ImGui::BeginTabItem("Position")) {
 					PositionDrawUI();
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Free Cam")) {
+					FreeCamDrawUI();
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Misc")) {
@@ -290,6 +295,36 @@ void GUI::PositionDrawUI()
 			TyBullPos = TyPositionRotation::GetBullPos();
 	}
 
+}
+
+void GUI::FreeCamDrawUI()
+{
+	//Just incase the camera state changes
+	EnableFreeCam = Camera::GetCameraState() == Camera::FreeCam;
+	if (ImGui::Checkbox("Enable Free Cam", &EnableFreeCam)) {
+		if (EnableFreeCam)
+		{
+			Camera::SetCameraState(Camera::FreeCam);
+			if (LockTyMovement)
+				*TyState::GetTyStatePtr() = 50;
+		}
+		else
+		{
+			Camera::SetCameraState(Camera::Default);
+			*TyState::GetTyStatePtr() = 35;
+		}
+	}
+	if (ImGui::Checkbox("Lock Ty's Movement During Free Cam", &LockTyMovement)) {
+		if (LockTyMovement && EnableFreeCam)
+			*TyState::GetTyStatePtr() = 50;
+		else
+			*TyState::GetTyStatePtr() = 35;
+	}
+
+	if (ImGui::Button("Reset Free Cam Speed"))
+		*Camera::GetFreeCamSpeedPtr() = 0.6f;
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat("Free Cam Speed", Camera::GetFreeCamSpeedPtr(), 0.1f, 25);
 }
 
 void GUI::MiscDrawUI()

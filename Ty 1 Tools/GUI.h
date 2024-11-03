@@ -11,6 +11,8 @@ namespace GUI
 	inline bool DisableFallDamage;
 	inline bool AutoSetPosition;
 	inline bool DontAutoUpdatePosition;
+	inline bool EnableFreeCam;
+	inline bool LockTyMovement = true;
 	//Mostly used for the count in the UI and to easily set the amount of charge bites
 	inline ImU8 ChargeBiteCount;
 
@@ -20,6 +22,8 @@ namespace GUI
 
 	inline int IntStepAmount = 1;
 	inline float FloatStepAmount = 10.0f;
+
+	inline float sliderWidth = 230;
 
 	//Position
 	inline TyPositionRotation::Vector3 TyBullPos;
@@ -33,6 +37,7 @@ namespace GUI
 	void RangsDrawUI();
 	void MovementDrawUI();
 	void PositionDrawUI();
+	void FreeCamDrawUI();
 	void MiscDrawUI();
 
 	void SetImGuiStyle();

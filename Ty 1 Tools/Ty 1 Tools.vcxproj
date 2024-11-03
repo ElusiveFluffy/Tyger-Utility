@@ -164,6 +164,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Fonts\TyFont.hpp" />
     <ClInclude Include="Fonts\TyNumberFont.hpp" />
     <ClInclude Include="framework.h" />
