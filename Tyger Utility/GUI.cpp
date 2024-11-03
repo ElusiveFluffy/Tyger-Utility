@@ -1,7 +1,7 @@
 #include "GUI.h"
 #include "framework.h"
 #include "TygerFrameworkAPI.hpp"
-#include "Ty1ModdingUtil.h"
+#include "TygerUtility.h"
 #include <string>
 #include <format>
 #include <regex>
@@ -91,7 +91,7 @@ void GUI::DrawUI()
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::SetNextWindowPos(ImVec2(60, 420), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(390, 340), ImGuiCond_FirstUseEver);
-		ImGui::Begin(Ty1ModdingUtil::PluginName.c_str());
+		ImGui::Begin(TygerUtility::PluginName.c_str());
 		ImGui::Checkbox("Show Debug Overlay", &Overlay::ShowOverlay);
 		AddToolTip("Tip: You can drag the overlay around to place it anywhere you want\nThe overlay only shows during gameplay");
 
@@ -445,7 +445,7 @@ void GUI::Overlay::DrawOverlay()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0.0f, 0.0f, 0.0f, 0.0f });
-	ImGui::Begin((Ty1ModdingUtil::PluginName + " Overlay").c_str(), nullptr, ImGuiWindowFlags_NoDecoration);
+	ImGui::Begin((TygerUtility::PluginName + " Overlay").c_str(), nullptr, ImGuiWindowFlags_NoDecoration);
 
 	//Only set the pos on the first time loading the plugin
 	ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - 550, 150), ImGuiCond_FirstUseEver);

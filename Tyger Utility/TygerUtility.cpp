@@ -1,4 +1,4 @@
-#include "Ty1ModdingUtil.h"
+#include "TygerUtility.h"
 #include "GUI.h"
 #include "ini.h"
 #include <filesystem>
@@ -13,7 +13,7 @@
 #include "TygerFrameworkAPI.hpp"
 namespace fs = std::filesystem;
 
-void Ty1ModdingUtil::TickBeforeGame(float deltaSeconds)
+void TygerUtility::TickBeforeGame(float deltaSeconds)
 {
     //Update it after Ty uses a charge bite in game
     GUI::ChargeBiteCount = *TyAttributes::GetChargeBiteOpalCounterPtr() / 100;
@@ -30,18 +30,18 @@ void Ty1ModdingUtil::TickBeforeGame(float deltaSeconds)
     if (GUI::EnableFreeCam && Camera::GetCameraState() != Camera::FreeCam)
         Camera::SetCameraState(Camera::FreeCam);
 
-    if (GUI::DrawUI)
+    if (API::DrawingGUI())
         API::SetTyInputFlag(NoKeyboardInput, ImGui::GetIO().WantCaptureKeyboard);
 }
 
-void Ty1ModdingUtil::OnTyInit() {
+void TygerUtility::OnTyInit() {
     //Will be set when reaching the title screen or gameplay (5 or 8)
     TyMemoryValues::SetLevelSelect(GUI::EnableLevelSelect);
     API::LogPluginMessage("Startup Set Level Select State");
     *TyMovement::GetBullSpeedPtr() = 35.0f;
 }
 
-void Ty1ModdingUtil::SaveSettings() {
+void TygerUtility::SaveSettings() {
     ini::File settings;
 
     //Create Ty 1 Modding Util section
@@ -55,7 +55,7 @@ void Ty1ModdingUtil::SaveSettings() {
     API::LogPluginMessage("Saved Settings to ini");
 }
 
-void Ty1ModdingUtil::LoadSettings() {
+void TygerUtility::LoadSettings() {
     if (!fs::exists(API::GetPluginDirectory() / (PluginName + ".ini")))
         return;
 

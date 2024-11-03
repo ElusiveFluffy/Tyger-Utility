@@ -3,7 +3,7 @@
 #include "TygerFrameworkAPI.hpp"
 #include "GUI.h"
 #include "TyMemoryValues.h"
-#include "Ty1ModdingUtil.h"
+#include "TygerUtility.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -18,7 +18,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         break;
     case DLL_PROCESS_DETACH:
         if (API::IsInitialized())
-            Ty1ModdingUtil::SaveSettings();
+            TygerUtility::SaveSettings();
         break;
     }
     return TRUE;
@@ -37,7 +37,7 @@ EXTERN_C bool TygerFrameworkPluginInitialize(TygerFrameworkPluginInitializeParam
 
     API::Initialize(param);
 
-    Ty1ModdingUtil::LoadSettings();
+    TygerUtility::LoadSettings();
 
     TyMemoryValues::GetBaseAddress();
 
@@ -45,9 +45,9 @@ EXTERN_C bool TygerFrameworkPluginInitialize(TygerFrameworkPluginInitializeParam
     //Make sure to cast this, otherwise TygerFramework won't get the return value
     API::AddPluginImGuiWantCaptureMouse((ImGuiWantCaptureMouseFunc)GUI::ImGuiWantCaptureMouse);
 
-    API::AddTickBeforeGame(Ty1ModdingUtil::TickBeforeGame);
+    API::AddTickBeforeGame(TygerUtility::TickBeforeGame);
 
-    API::AddOnTyInitialized(Ty1ModdingUtil::OnTyInit);
+    API::AddOnTyInitialized(TygerUtility::OnTyInit);
 
     return true;
 }

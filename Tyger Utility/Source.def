@@ -1,4 +1,4 @@
-LIBRARY "Ty 1 Tools"
+LIBRARY "Tyger Utility"
 
 EXPORTS
 TygerFrameworkPluginInitialize

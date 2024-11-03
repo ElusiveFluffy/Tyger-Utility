@@ -1,12 +1,12 @@
 #pragma once
 #include <string>
-namespace Ty1ModdingUtil
+namespace TygerUtility
 {
 	void TickBeforeGame(float deltaSeconds);
 	void OnTyInit();
 	void SaveSettings();
 	void LoadSettings();
 
-	inline std::string PluginName = "Ty 1 Modding Util";
+	inline std::string PluginName = "Tyger Utility";
 };
 
