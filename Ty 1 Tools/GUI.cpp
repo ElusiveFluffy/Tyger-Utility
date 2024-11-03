@@ -298,8 +298,7 @@ void GUI::PositionDrawUI()
 
 void GUI::FreeCamDrawUI()
 {
-	//Just incase the camera state changes
-	EnableFreeCam = Camera::GetCameraState() == Camera::FreeCam;
+	//Only runs when the checkbox state changes
 	if (ImGui::Checkbox("Enable Free Cam", &EnableFreeCam)) {
 		if (EnableFreeCam)
 		{
@@ -310,9 +309,11 @@ void GUI::FreeCamDrawUI()
 		else
 		{
 			Camera::SetCameraState(Camera::Default);
+			//Just always reset it just incase
 			*TyState::GetTyStatePtr() = 35;
 		}
 	}
+	//To unlock/lock it while free cam is active
 	if (ImGui::Checkbox("Lock Ty's Movement During Free Cam", &LockTyMovement)) {
 		if (LockTyMovement && EnableFreeCam)
 			*TyState::GetTyStatePtr() = 50;

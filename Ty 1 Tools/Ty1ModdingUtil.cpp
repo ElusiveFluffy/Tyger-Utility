@@ -7,6 +7,7 @@
 #include "TyMovement.h"
 #include "TyAttributes.h"
 #include "TyState.h"
+#include "Camera.h"
 #include "Levels.h"
 
 #include "TygerFrameworkAPI.hpp"
@@ -24,6 +25,10 @@ void Ty1ModdingUtil::TickBeforeGame(float deltaSeconds)
 
     if (GUI::DisableFallDamage && *TyState::GetTyStatePtr() == 27 && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && Levels::GetCurrentLevelID() != 10)
         *TyState::GetTyStatePtr() = 26;
+
+    //Just incase the camera state changes
+    if (GUI::EnableFreeCam && Camera::GetCameraState() != Camera::FreeCam)
+        Camera::SetCameraState(Camera::FreeCam);
 }
 
 void Ty1ModdingUtil::OnTyInit() {
