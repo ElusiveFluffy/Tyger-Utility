@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{461e5950-4c6b-4b21-b004-580a8abeec29}</ProjectGuid>
-    <RootNamespace>Ty1Tools</RootNamespace>
+    <RootNamespace>TygerUtility</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Tyger Utility</ProjectName>
   </PropertyGroup>
