@@ -4,6 +4,7 @@
 #include "Ty1ModdingUtil.h"
 #include <string>
 #include <format>
+#include <regex>
 
 //Memory
 #include "TyMemoryValues.h"
@@ -22,6 +23,7 @@ using namespace TyPositionRotation;
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_win32.h"
+#include "imgui_stdlib.h" //For std::string
 #include "imgui_internal.h" //For Free Drawing
 
 //WndProc to be able to interact with imgui or block any WndProc from interacting with the Ty window
@@ -248,26 +250,46 @@ void GUI::MovementDrawUI()
 	}
 }
 
+int GUI::PositionTextBoxFilter(ImGuiInputTextCallbackData* data)
+{
+	//Only allow stuff that matches any of these characters
+	if (strchr("-1234567890,. ", (char)data->EventChar))
+		return 0;
+	return 1;
+}
+
+std::vector<std::string> Split(const std::string str, const std::string regex_str)
+{
+	std::regex regexz(regex_str);
+	std::vector<std::string> list(std::sregex_token_iterator(str.begin(), str.end(), regexz, -1),
+		std::sregex_token_iterator());
+	return list;
+}
+
 void GUI::PositionDrawUI()
 {
 	ImGui::Checkbox("Auto Teleport", &AutoSetPosition);
 	AddToolTip("Automatically set's Ty/Bull's position when they're edited");
 	ImGui::SameLine();
 	ImGui::Checkbox("Don't Auto Update Position", &DontAutoUpdatePosition);
+
 	ImGui::InputScalar("Step Amount", ImGuiDataType_Float, &FloatStepAmount);
 	AddToolTip("Sets the amount the -/+ buttons add or subtract");
 	if (Levels::GetCurrentLevelID() != 10)
 	{
 		//Only auto update it if none have changed
 		if (!AnyChanged && !DontAutoUpdatePosition)
+		{
 			TyBullPos = TyPositionRotation::GetTyPos();
-		ImGui::Text("Ty Position:");
-		//Or just so if any have previously changed it'll keep it true
-		AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
-		AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
-		AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
+			PositionText = std::format("{:.3f}, {:.3f}, {:.3f}", TyBullPos.X, TyBullPos.Y, TyBullPos.Z);
+		}
+		ImGui::Text("Ty Position (X, Y, Z):");
+		SetPositionElements();
 		if (ImGui::Button("Teleport") || (AutoSetPosition && AnyChanged))
 		{
+			auto posDelta = TyBullPos - TyPositionRotation::GetTyPos();
+
+			Camera::SetCameraPos(Camera::GetCameraPos() + posDelta);
 			TyPositionRotation::SetTyPos(TyBullPos);
 			AnyChanged = false;
 		}
@@ -279,12 +301,12 @@ void GUI::PositionDrawUI()
 	{
 		//Only auto update it if none have changed
 		if (!AnyChanged && !DontAutoUpdatePosition)
+		{
 			TyBullPos = TyPositionRotation::GetBullPos();
-		ImGui::Text("Bull Position:");
-		//Or just so if any have previously changed it'll keep it true
-		AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
-		AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
-		AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
+			PositionText = std::format("{:.3f}, {:.3f}, {:.3f}", TyBullPos.X, TyBullPos.Y, TyBullPos.Z);
+		}
+		ImGui::Text("Bull Position (X, Y, Z):");
+		SetPositionElements();
 		if (ImGui::Button("Teleport") || (AutoSetPosition && AnyChanged))
 		{
 			TyPositionRotation::SetBullPos(TyBullPos);
@@ -295,6 +317,26 @@ void GUI::PositionDrawUI()
 			TyBullPos = TyPositionRotation::GetBullPos();
 	}
 
+}
+
+void GUI::SetPositionElements()
+{
+	//To be able to copy and paste in the position
+	ImGui::InputText("Position", &PositionText, ImGuiInputTextFlags_CallbackCharFilter, GUI::PositionTextBoxFilter);
+	if (ImGui::IsItemDeactivated())
+	{
+		std::vector<std::string> positions = Split(PositionText, ",");
+		if (positions.size() == 3 && PositionText != std::format("{:.3f}, {:.3f}, {:.3f}", TyBullPos.X, TyBullPos.Y, TyBullPos.Z))
+		{
+			TyBullPos = { std::stof(positions[0]), std::stof(positions[1]), std::stof(positions[2]) };
+			AnyChanged = true;
+		}
+	}
+	ImGui::Spacing();
+	//Or just so if any have previously changed it'll keep it true
+	AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
+	AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
+	AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
 }
 
 void GUI::FreeCamDrawUI()

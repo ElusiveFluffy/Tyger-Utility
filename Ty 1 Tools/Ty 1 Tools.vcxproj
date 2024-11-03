@@ -74,7 +74,7 @@
     <IncludePath>Include;Include\ImGui\backends;Include\ImGui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>Include;Include\ImGui\backends;Include\ImGui;$(IncludePath)</IncludePath>
+    <IncludePath>Include;Include\ImGui\misc\cpp;Include\ImGui\backends;Include\ImGui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>Include;Include\ImGui\backends;Include\ImGui;$(IncludePath)</IncludePath>
@@ -178,6 +178,7 @@
     <ClInclude Include="Include\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Include\ImGui\imstb_textedit.h" />
     <ClInclude Include="Include\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Include\ImGui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="Include\ini.h" />
     <ClInclude Include="Include\TygerFrameworkAPI.h" />
     <ClInclude Include="Include\TygerFrameworkAPI.hpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="Include\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Include\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Include\ImGui\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -6,14 +6,21 @@ using namespace TyMemoryValues;
 
 namespace TyPositionRotation {
 	struct PtrVector3 {
-		float* X;
-		float* Y;
-		float* Z;
+		float* X,* Y,* Z;
 	};
 	struct Vector3 {
-		float X;
-		float Y;
-		float Z;
+		float X, Y, Z;
+
+		Vector3 operator+(Vector3 const rhs) const{
+			return { X + rhs.X,
+					 Y + rhs.Y,
+					 Z + rhs.Z }; 
+		};
+		Vector3 operator-(Vector3 const rhs) const{
+			return { X - rhs.X,
+					 Y - rhs.Y,
+					 Z - rhs.Z };
+		};
 	};
 	//Get
 	//Ty Pos and Rot

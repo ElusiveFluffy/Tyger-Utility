@@ -29,6 +29,9 @@ void Ty1ModdingUtil::TickBeforeGame(float deltaSeconds)
     //Just incase the camera state changes
     if (GUI::EnableFreeCam && Camera::GetCameraState() != Camera::FreeCam)
         Camera::SetCameraState(Camera::FreeCam);
+
+    if (GUI::DrawUI)
+        API::SetTyInputFlag(NoKeyboardInput, ImGui::GetIO().WantCaptureKeyboard);
 }
 
 void Ty1ModdingUtil::OnTyInit() {

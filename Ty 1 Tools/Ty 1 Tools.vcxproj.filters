@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Ty Memory Values">
       <UniqueIdentifier>{069cc433-1ad7-4410-8962-e3b39cdb5f29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include\ImGui\misc">
+      <UniqueIdentifier>{2ec22b87-fb15-4aef-b162-8f79d4b51572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\ImGui\misc\cpp">
+      <UniqueIdentifier>{a5a5477f-edf1-4704-a81a-ce474c0e5427}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -108,6 +114,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Ty Memory Values</Filter>
     </ClInclude>
+    <ClInclude Include="Include\ImGui\misc\cpp\imgui_stdlib.h">
+      <Filter>Include\ImGui\misc\cpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -145,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="Ty1ModdingUtil.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\ImGui\misc\cpp\imgui_stdlib.cpp">
+      <Filter>Include\ImGui\misc\cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

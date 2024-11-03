@@ -9,7 +9,7 @@ namespace GUI
 
 	inline bool EnableLevelSelect;
 	inline bool DisableFallDamage;
-	inline bool AutoSetPosition;
+	inline bool AutoSetPosition = true;
 	inline bool DontAutoUpdatePosition;
 	inline bool EnableFreeCam;
 	inline bool LockTyMovement = true;
@@ -27,6 +27,7 @@ namespace GUI
 
 	//Position
 	inline TyPositionRotation::Vector3 TyBullPos;
+	inline std::string PositionText = "";
 	inline bool AnyChanged;
 
 	void AddToolTip(const char* toolTip);
@@ -37,11 +38,14 @@ namespace GUI
 	void RangsDrawUI();
 	void MovementDrawUI();
 	void PositionDrawUI();
+	void SetPositionElements();
 	void FreeCamDrawUI();
 	void MiscDrawUI();
 
 	void SetImGuiStyle();
 	bool ImGuiWantCaptureMouse();
+
+	int PositionTextBoxFilter(ImGuiInputTextCallbackData* data);
 
 	class Overlay {
 	public:

@@ -39,4 +39,10 @@ namespace Camera {
         *(CameraState*)(TyBaseAddress + 0x27EBC8) = cameraState;
         *(CameraState*)(TyBaseAddress + 0x27EBD0) = cameraState;
     };
+
+    inline Vector3 GetCameraPos() { return *(Vector3*)(TyBaseAddress + 0x27EB78); };
+    inline void SetCameraPos(Vector3 position) { *(Vector3*)(TyBaseAddress + 0x27EB78) = position; };
+
+    inline Vector3 GetCameraRot() { return *(Vector3*)(TyBaseAddress + 0x27F2B4); };
+    inline void SetCameraRot(Vector3 rotation) { *(Vector3*)(TyBaseAddress + 0x27F2B4) = rotation; };
 }
