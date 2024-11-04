@@ -23,7 +23,8 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
     else
         GUI::DrawUI();
 
-    if (GUI::DisableFallDamage && *TyState::GetTyStatePtr() == 27 && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && Levels::GetCurrentLevelID() != 10)
+    //The second Ty state one is a bit behind but will always be Ty's current state, while the first is more like Ty's next state
+    if (GUI::DisableFallDamage && (*TyState::GetTyStatePtr() == 27 || TyState::GetTyState() == 27) && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && Levels::GetCurrentLevelID() != 10)
         *TyState::GetTyStatePtr() = 26;
 
     //Just incase the camera state changes
