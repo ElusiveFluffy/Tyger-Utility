@@ -1,27 +1,11 @@
 #pragma once
 #include "TyMemoryValues.h"
+#include "Vector3.h"
 #include <cmath>
 
 using namespace TyMemoryValues;
 
 namespace TyPositionRotation {
-	struct PtrVector3 {
-		float* X,* Y,* Z;
-	};
-	struct Vector3 {
-		float X, Y, Z;
-
-		Vector3 operator+(Vector3 const rhs) const{
-			return { X + rhs.X,
-					 Y + rhs.Y,
-					 Z + rhs.Z }; 
-		};
-		Vector3 operator-(Vector3 const rhs) const{
-			return { X - rhs.X,
-					 Y - rhs.Y,
-					 Z - rhs.Z };
-		};
-	};
 	//Get
 	//Ty Pos and Rot
 	inline PtrVector3 GetTyPosPtr() { return { (float*)(TyBaseAddress + 0x270B78), (float*)(TyBaseAddress + 0x270B7C), (float*)(TyBaseAddress + 0x270B80) }; };
@@ -43,6 +27,9 @@ namespace TyPositionRotation {
 		*tyPos.Y = position.Y;
 		*tyPos.Z = position.Z;
 	};
+	inline void SetTyRot(float rotation) {
+		*(float*)(TyBaseAddress + 0x271C20) = rotation;
+	}
 
 	inline void SetBullPos(Vector3 position) {
 		PtrVector3 bullPos = GetBullPosPtr();
@@ -50,4 +37,7 @@ namespace TyPositionRotation {
 		*bullPos.Y = position.Y;
 		*bullPos.Z = position.Z;
 	};
+	inline void SetBullRot(float rotation) {
+		*(float*)(TyBaseAddress + 0x2545F4) = rotation;
+	}
 };

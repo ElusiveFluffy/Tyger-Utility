@@ -1,6 +1,7 @@
 #include "TygerUtility.h"
 #include "GUI.h"
 #include "ini.h"
+#include "TeleportPositions.h"
 #include <filesystem>
 //Ty Memory
 #include "TyMemoryValues.h"
@@ -22,9 +23,25 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
         GUI::Initialize();
     else
         GUI::DrawUI();
+    
+    if (Levels::GetCurrentLevelID() != CurrentLevel && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay)
+    {
+        if (!TyState::IsBull() && TyState::GetTyState() != 0)
+        {
+            CurrentLevel = Levels::GetCurrentLevelID();
+            TeleportPositions::SpawnValues value{ TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+            TeleportPositions::SpawnPositions.emplace(CurrentLevel, value);
+        }
+        else if (TyState::IsBull() && TyState::GetBullState() != -1)
+        {
+            CurrentLevel = Levels::GetCurrentLevelID();
+            TeleportPositions::SpawnValues value{ TyPositionRotation::GetBullPos(), TyPositionRotation::GetBullRot(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+            TeleportPositions::SpawnPositions.emplace(CurrentLevel, value);
+        }
+    }
 
     //The second Ty state one is a bit behind but will always be Ty's current state, while the first is more like Ty's next state
-    if (GUI::DisableFallDamage && (*TyState::GetTyStatePtr() == 27 || TyState::GetTyState() == 27) && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && Levels::GetCurrentLevelID() != 10)
+    if (GUI::DisableFallDamage && (*TyState::GetTyStatePtr() == 27 || TyState::GetTyState() == 27) && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && !TyState::IsBull())
         *TyState::GetTyStatePtr() = 26;
 
     //Just incase the camera state changes
@@ -39,6 +56,7 @@ void TygerUtility::OnTyInit() {
     //Will be set when reaching the title screen or gameplay (5 or 8)
     TyMemoryValues::SetLevelSelect(GUI::EnableLevelSelect);
     API::LogPluginMessage("Startup Set Level Select State");
+    //Usually 0 before loading outback
     *TyMovement::GetBullSpeedPtr() = 35.0f;
 }
 

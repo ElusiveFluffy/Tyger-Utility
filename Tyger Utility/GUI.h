@@ -26,7 +26,7 @@ namespace GUI
 	inline float sliderWidth = 230;
 
 	//Position
-	inline TyPositionRotation::Vector3 TyBullPos;
+	inline Vector3 TyBullPos;
 	inline std::string PositionText = "";
 	inline bool AnyChanged;
 

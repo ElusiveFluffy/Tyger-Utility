@@ -85,6 +85,8 @@ namespace TyState {
 
 	inline bool* TyInvincibility() { return (bool*)(TyBaseAddress + 0x288A55); };
 
+	inline bool IsBull() { return *(bool*)(TyBaseAddress + 0x27E544); };
+
 	//Ty's anim pointer is only null while in outback but it never gets read then so its fine
 	inline const char* GetTyAnimationName() { return (char*)*(int*)*(int*)(TyBaseAddress + 0x271014); }
 	inline const char* GetBullAnimationName() { 

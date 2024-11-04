@@ -7,6 +7,9 @@ namespace TygerUtility
 	void SaveSettings();
 	void LoadSettings();
 
+	//Needs to be -1 as rainbow cliffs is 0
+	inline int CurrentLevel = -1;
+
 	inline std::string PluginName = "Tyger Utility";
 };
 

@@ -185,12 +185,14 @@
     <ClInclude Include="Include\TygerFrameworkAPI.hpp" />
     <ClInclude Include="Levels.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TeleportPositions.h" />
     <ClInclude Include="TygerUtility.h" />
     <ClInclude Include="TyAttributes.h" />
     <ClInclude Include="TyMemoryValues.h" />
     <ClInclude Include="TyMovement.h" />
     <ClInclude Include="TyPositionRotation.h" />
     <ClInclude Include="TyState.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

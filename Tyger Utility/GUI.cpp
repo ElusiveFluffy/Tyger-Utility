@@ -2,6 +2,7 @@
 #include "framework.h"
 #include "TygerFrameworkAPI.hpp"
 #include "TygerUtility.h"
+#include "TeleportPositions.h"
 #include <string>
 #include <format>
 #include <regex>
@@ -30,8 +31,24 @@ using namespace TyPositionRotation;
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
-	if (msg == WM_KEYDOWN && (int)wParam == 'B')
-		TyPositionRotation::SetTyPos({ 71.0f, 2623.0f, 209.0f });
+	//Teleport back to spawn from the position auto set
+	if (msg == WM_KEYDOWN && (int)wParam == VK_HOME)
+	{
+		auto position = TeleportPositions::SpawnPositions[Levels::GetCurrentLevelID()];
+		if (!TyState::IsBull())
+		{
+			SetTyPos(position.Position);
+			SetTyRot(position.Rotation);
+		}
+		else
+		{
+			SetBullPos(position.Position);
+			SetBullRot(position.Rotation);
+		}
+
+		Camera::SetCameraRotYaw(position.CameraYaw);
+		Camera::SetCameraRotPitch(position.CameraPitch);
+	}
 
 	if (API::DrawingGUI())
 		if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
@@ -183,7 +200,7 @@ void GUI::RangsDrawUI()
 
 void GUI::MovementDrawUI()
 {
-	if (Levels::GetCurrentLevelID() != 10)
+	if (!TyState::IsBull())
 	{
 		ImGui::Checkbox("Disable Fall Damage", &DisableFallDamage);
 		AddToolTip("Also disables the long fall animation");
@@ -275,7 +292,7 @@ void GUI::PositionDrawUI()
 
 	ImGui::InputScalar("Step Amount", ImGuiDataType_Float, &FloatStepAmount);
 	AddToolTip("Sets the amount the -/+ buttons add or subtract");
-	if (Levels::GetCurrentLevelID() != 10)
+	if (!TyState::IsBull())
 	{
 		//Only auto update it if none have changed
 		if (!AnyChanged && !DontAutoUpdatePosition)
@@ -465,7 +482,7 @@ void GUI::Overlay::DrawOverlay()
 	if (TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay)
 	{
 		//Only Show the Values for the bull if in outback safari
-		if (Levels::GetCurrentLevelID() != 10)
+		if (!TyState::IsBull())
 		{
 			DrawDropShadowText(drawList, "Ty:");
 			Vector3 tyPos = TyPositionRotation::GetTyPos();

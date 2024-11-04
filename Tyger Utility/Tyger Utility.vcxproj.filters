@@ -117,6 +117,12 @@
     <ClInclude Include="Include\ImGui\misc\cpp\imgui_stdlib.h">
       <Filter>Include\ImGui\misc\cpp</Filter>
     </ClInclude>
+    <ClInclude Include="TeleportPositions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
