@@ -15,10 +15,10 @@ namespace Camera {
         CameraOverride = 12,
         FluffyRotationLock = 13,
         Locked = 17,
-        Cutscene = 18, // DONT DO IT
+        LockOn = 18, // DONT DO IT
         RexDiving = 20, // CAN BE USED TO UN-SOFTLOCK WHEN SWAPPED!!!
         ShipSpire = 23,
-        Cutscene2 = 24,
+        Cutscene = 24,
         FreeCam = 28,
     };
     inline std::map<CameraState, std::string> StateNames{
@@ -27,10 +27,10 @@ namespace Camera {
         {CameraOverride, "Camera Override"},
         {FluffyRotationLock, "Fluffy Rotation Lock"},
         {Locked, "Locked"},
-        {Cutscene, "Cutscene"},
+        {LockOn, "Lock On"},
         {RexDiving, "Rex Diving"},
         {ShipSpire, "Camera Spiral"},
-        {Cutscene2, "Cutscene"},
+        {Cutscene, "Cutscene"},
         {FreeCam, "Free Cam"}
     };
 	inline float* GetFreeCamSpeedPtr() { return (float*)(TyBaseAddress + 0x254B08); };
