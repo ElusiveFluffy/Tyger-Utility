@@ -50,6 +50,10 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
 
     if (API::DrawingGUI())
         API::SetTyInputFlag(NoKeyboardInput, ImGui::GetIO().WantCaptureKeyboard);
+
+    //Decrease the counter for the text using delta seconds
+    if (GUI::Overlay::PosTextShowSeconds != 0)
+        GUI::Overlay::PosTextShowSeconds = std::clamp(GUI::Overlay::PosTextShowSeconds - deltaSeconds, 0.0f, 2.0f);
 }
 
 void TygerUtility::OnTyInit() {

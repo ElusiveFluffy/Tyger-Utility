@@ -60,6 +60,12 @@ namespace GUI
 		static void DrawLabelWithNumbers(ImDrawList* drawList, std::string label, std::string numberText);
 		static void DrawDropShadowText(ImDrawList* drawList, const char* text, bool addNewLine = true, ImVec2 positionOffset = ImVec2(0, 0), ImFont* font = TyFont);
 
+		inline static float PosTextShowSeconds = 0.0f;
+		inline static std::string PosSlotText = "";
+
+		static void DrawPosSlotOverlay();
+		static void SetAndShowSlotText(std::string text, int slotNumber);
+
 	private:
 		static std::string AddSpacesBeforeCapitalAndNum(std::string text);
 		//States
@@ -67,6 +73,8 @@ namespace GUI
 		static std::string BullStateText();
 
 		static std::string CameraStateText();
+
+		inline static float ShowTime = 2.0f;
 	};
 
 };

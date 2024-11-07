@@ -39,6 +39,7 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		case VK_HOME:
 			auto position = TeleportPositions::SpawnPositions[Levels::GetCurrentLevelID()];
 			AdvancedTeleportPlayer(position);
+			GUI::Overlay::SetAndShowSlotText("Returned to Spawn", -1);
 			break;
 		}
 		if (VK_F2 <= (int)wParam && (int)wParam <= VK_F9)
@@ -52,12 +53,17 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 
 				TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()] = positions;
+
+				GUI::Overlay::SetAndShowSlotText("Saved slot", (int)wParam - 0x71);
 			}
 			else
 			{
 				auto position = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()][(int)wParam - 0x71];
 				if (position.ValidSlot)
+				{
 					AdvancedTeleportPlayer(position);
+					GUI::Overlay::SetAndShowSlotText("Loaded slot", (int)wParam - 0x71);
+				}
 			}
 		}
 	}
@@ -114,6 +120,9 @@ void GUI::DrawUI()
 
 	if (Overlay::ShowOverlay)
 		Overlay::DrawOverlay();
+
+	if (Overlay::PosTextShowSeconds != 0.0f)
+		Overlay::DrawPosSlotOverlay();
 
 	if (API::DrawingGUI())
 	{
@@ -465,11 +474,6 @@ void GUI::Overlay::DrawOverlay()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0.0f, 0.0f, 0.0f, 0.0f });
 	ImGui::Begin((TygerUtility::PluginName + " Overlay").c_str(), nullptr, ImGuiWindowFlags_NoDecoration);
-
-	//Only set the pos on the first time loading the plugin
-	ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - 550, 150), ImGuiCond_FirstUseEver);
-	//Auto resize to content
-	ImGui::SetWindowSize(ImVec2(LongestLine * 13.71f, TextLineCount * (FontSize + 5)), ImGuiCond_Always);
 	//Reset the counts
 	TextLineCount = 0;
 	LongestLine = 0;
@@ -516,6 +520,11 @@ void GUI::Overlay::DrawOverlay()
 		}
 	}
 
+	//Only set the pos on the first time loading the plugin
+	ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - 550, 150), ImGuiCond_FirstUseEver);
+	//Auto resize to content
+	ImGui::SetWindowSize(ImVec2(LongestLine * 13.71f, TextLineCount* (FontSize + 5)), ImGuiCond_Always);
+
 	drawList->PushClipRectFullScreen();
 	ImGui::End();
 	ImGui::PopStyleColor();
@@ -549,4 +558,58 @@ void GUI::Overlay::DrawDropShadowText(ImDrawList* drawList, const char* text, bo
 	int lineLength = strlen(text);
 	if (lineLength > LongestLine)
 		LongestLine = lineLength;
+}
+
+void GUI::Overlay::DrawPosSlotOverlay()
+{
+	ImGuiIO& io = ImGui::GetIO();
+
+	//Remove all window elements
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0.0f, 0.0f, 0.0f, 0.0f });
+	ImGui::Begin((TygerUtility::PluginName + " Slot Overlay").c_str(), nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoInputs);
+
+	ImGuiWindow* window = ImGui::GetCurrentWindow();
+	ImDrawList* drawList = window->DrawList;
+	//Set the text start pos to the window pos
+	TextStartPos = window->Pos;
+
+	//Fade in and out
+	ImU32 opacity = 255;
+	if (PosTextShowSeconds > 1.6f)
+		opacity = ((0.4f - (PosTextShowSeconds - 1.6f)) / 0.4f) * 255;
+	else if (PosTextShowSeconds < 0.4f)
+		opacity = (PosTextShowSeconds / 0.4f) * 255;
+
+	//Draw text
+	const char* charText = PosSlotText.c_str();
+	drawList->AddText(TyFont, TyFont->FontSize, ImVec2(TextStartPos.x + DropShadowOffset.x, TextStartPos.y + DropShadowOffset.y), IM_COL32(10, 10, 10, opacity), charText); //Drop shadow text
+	drawList->AddText(TyFont, TyFont->FontSize, ImVec2(TextStartPos.x, TextStartPos.y), IM_COL32(255, 255, 255, opacity), charText); //Normal text
+
+	//Get the text size with the Ty font
+	ImGui::PushFont(TyFont);
+	ImVec2 size = ImGui::CalcTextSize(charText);
+	//Reset the current font back to the default font
+	ImGui::PopFont();
+
+	//Only set the pos on the first time loading the plugin
+	ImGui::SetWindowPos(ImVec2(io.DisplaySize.x - (size.x + 10), io.DisplaySize.y - (size.y + 10)), ImGuiCond_Always);
+	//Auto resize to content
+	ImGui::SetWindowSize({size.x + DropShadowOffset.x, size.y + DropShadowOffset.y}, ImGuiCond_Always);
+
+	drawList->PushClipRectFullScreen();
+	ImGui::End();
+	ImGui::PopStyleColor();
+	ImGui::PopStyleVar(2);
+}
+
+void GUI::Overlay::SetAndShowSlotText(std::string text, int slotNumber)
+{
+	//-1 used for the spawn teleport
+	if (slotNumber != -1)
+		GUI::Overlay::PosSlotText = text + " " + std::to_string(slotNumber);
+	else
+		GUI::Overlay::PosSlotText = text;
+	GUI::Overlay::PosTextShowSeconds = GUI::Overlay::ShowTime;
 }
