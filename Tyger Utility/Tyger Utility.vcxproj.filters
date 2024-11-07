@@ -164,6 +164,9 @@
     <ClCompile Include="Include\ImGui\misc\cpp\imgui_stdlib.cpp">
       <Filter>Include\ImGui\misc\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="TeleportPositions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.def">

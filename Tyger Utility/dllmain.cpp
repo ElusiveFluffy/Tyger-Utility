@@ -4,6 +4,7 @@
 #include "GUI.h"
 #include "TyMemoryValues.h"
 #include "TygerUtility.h"
+#include "TeleportPositions.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -18,7 +19,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         break;
     case DLL_PROCESS_DETACH:
         if (API::IsInitialized())
+        {
             TygerUtility::SaveSettings();
+            TeleportPositions::SavePositionsToFile();
+        }
         break;
     }
     return TRUE;
@@ -38,6 +42,7 @@ EXTERN_C bool TygerFrameworkPluginInitialize(TygerFrameworkPluginInitializeParam
     API::Initialize(param);
 
     TygerUtility::LoadSettings();
+    TeleportPositions::LoadPositionsFromFile();
 
     TyMemoryValues::GetBaseAddress();
 

@@ -32,22 +32,34 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 	//Teleport back to spawn from the position auto set
-	if (msg == WM_KEYDOWN && (int)wParam == VK_HOME)
+	if (msg == WM_KEYDOWN)
 	{
-		auto position = TeleportPositions::SpawnPositions[Levels::GetCurrentLevelID()];
-		if (!TyState::IsBull())
+		switch ((int)wParam)
 		{
-			SetTyPos(position.Position);
-			SetTyRot(position.Rotation);
+		case VK_HOME:
+		auto position = TeleportPositions::SpawnPositions[Levels::GetCurrentLevelID()];
+			AdvancedTeleportPlayer(position);
+			break;
+		}
+		if (VK_F2 <= (int)wParam && (int)wParam <= VK_F9)
+		{
+			if (GetKeyState(VK_SHIFT) & 0x8000) {
+				auto positions = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()];
+
+				if (!TyState::IsBull())
+					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), TyState::GetTyState(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+				else
+					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+
+				TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()] = positions;
 		}
 		else
 		{
-			SetBullPos(position.Position);
-			SetBullRot(position.Rotation);
+				auto position = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()][(int)wParam - 0x71];
+				if (position.ValidSlot)
+					AdvancedTeleportPlayer(position);
 		}
-
-		Camera::SetCameraRotYaw(position.CameraYaw);
-		Camera::SetCameraRotPitch(position.CameraPitch);
+	}
 	}
 
 	if (API::DrawingGUI())
@@ -121,7 +133,7 @@ void GUI::DrawUI()
 
 			ImGui::Spacing();
 
-			if (ImGui::BeginTabBar("Tool Tabs", ImGuiTabBarFlags_Reorderable)) {
+			if (ImGui::BeginTabBar("Tool Tabs")) {
 				if (ImGui::BeginTabItem("Rangs")) {
 					RangsDrawUI();
 					ImGui::EndTabItem();

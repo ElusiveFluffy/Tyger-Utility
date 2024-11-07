@@ -82,6 +82,7 @@ namespace TyState {
 	//Slightly different from one, doesn't ever seem to be -1, and doesn't change to -1 at the start of a loading screen
 	inline int GetTyState() { return *(int*)(TyBaseAddress + 0x26EE4C); };
 	inline int GetBullState() { return *(int*)(TyBaseAddress + 0x254560); };
+	inline void SetBullState(int state) { *(int*)(TyBaseAddress + 0x254560) = state; };
 
 	inline bool* TyInvincibility() { return (bool*)(TyBaseAddress + 0x288A55); };
 

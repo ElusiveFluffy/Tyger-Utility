@@ -19,6 +19,8 @@ namespace TyPositionRotation {
 		float bullRot = *(float*)(TyBaseAddress + 0x2545F4);
 		return std::abs((float)((int)(bullRot * 1000) % 6282) / 1000);
 	};
+	//Needed for the position setting
+	inline float GetUnmodifiedBullRot() { return *(float*)(TyBaseAddress + 0x2545F4); };
 
 	//Set
 	inline void SetTyPos(Vector3 position) {

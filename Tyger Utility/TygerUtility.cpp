@@ -29,13 +29,13 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
         if (!TyState::IsBull() && TyState::GetTyState() != 0)
         {
             CurrentLevel = Levels::GetCurrentLevelID();
-            TeleportPositions::SpawnValues value{ TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+            TeleportPositions::PositionValues value{ true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), 35, Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
             TeleportPositions::SpawnPositions.emplace(CurrentLevel, value);
         }
         else if (TyState::IsBull() && TyState::GetBullState() != -1)
         {
             CurrentLevel = Levels::GetCurrentLevelID();
-            TeleportPositions::SpawnValues value{ TyPositionRotation::GetBullPos(), TyPositionRotation::GetBullRot(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+            TeleportPositions::PositionValues value{ true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), 0, Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
             TeleportPositions::SpawnPositions.emplace(CurrentLevel, value);
         }
     }
