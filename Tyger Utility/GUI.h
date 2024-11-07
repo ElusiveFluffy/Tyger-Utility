@@ -23,7 +23,7 @@ namespace GUI
 	inline int IntStepAmount = 1;
 	inline float FloatStepAmount = 10.0f;
 
-	inline float sliderWidth = 230;
+	inline float sliderWidth = 270;
 
 	//Position
 	inline Vector3 TyBullPos;
@@ -37,6 +37,7 @@ namespace GUI
 	void DrawUI();
 	void RangsDrawUI();
 	void MovementDrawUI();
+	void FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue);
 	void PositionDrawUI();
 	void SetPositionElements();
 	void FreeCamDrawUI();

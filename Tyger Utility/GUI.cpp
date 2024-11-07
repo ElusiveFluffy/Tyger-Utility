@@ -37,7 +37,7 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		switch ((int)wParam)
 		{
 		case VK_HOME:
-		auto position = TeleportPositions::SpawnPositions[Levels::GetCurrentLevelID()];
+			auto position = TeleportPositions::SpawnPositions[Levels::GetCurrentLevelID()];
 			AdvancedTeleportPlayer(position);
 			break;
 		}
@@ -52,14 +52,14 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 
 				TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()] = positions;
-		}
-		else
-		{
+			}
+			else
+			{
 				auto position = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()][(int)wParam - 0x71];
 				if (position.ValidSlot)
 					AdvancedTeleportPlayer(position);
+			}
 		}
-	}
 	}
 
 	if (API::DrawingGUI())
@@ -210,6 +210,16 @@ void GUI::RangsDrawUI()
 	ImGui::EndTable();
 }
 
+void GUI::FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue) {
+	ImGui::Text(text.c_str());
+	ImGui::SetNextItemWidth(sliderWidth);
+	ImGui::SliderFloat(("##" + text).c_str(), valuePtr, min, max);
+	ImGui::SameLine();
+	//Needs ## so it has a different internal name from all the others
+	if (ImGui::Button(("Reset##Reset " + text).c_str()))
+		*valuePtr = defaultValue;
+}
+
 void GUI::MovementDrawUI()
 {
 	if (!TyState::IsBull())
@@ -222,58 +232,39 @@ void GUI::MovementDrawUI()
 			*TyState::GetTyStatePtr() = 39;
 
 		ImGui::Spacing();
-		if (ImGui::Button("Reset Glide Up/Down"))
-			*TyMovement::GetGlideUpDownPtr() = 5.5f;
-		ImGui::SetNextItemWidth(sliderWidth);
-		ImGui::SliderFloat("Glide Up/Down", TyMovement::GetGlideUpDownPtr(), 20, -20);
+		FloatSliderElement("Glide Up/Down", TyMovement::GetGlideUpDownPtr(), 20, -20, 5.5f);
 
 		ImGui::Spacing();
-		if (ImGui::Button("Reset Glide Speed"))
-			*TyMovement::GetGlideSpeedPtr() = 7.0f;
-		ImGui::SetNextItemWidth(sliderWidth);
-		ImGui::SliderFloat("Glide Speed", TyMovement::GetGlideSpeedPtr(), 0.25f, 100);
+		FloatSliderElement("Glide Speed", TyMovement::GetGlideSpeedPtr(), 0.25f, 100, 7.0f);
 
 		ImGui::Spacing();
-		if (ImGui::Button("Reset Run Speed"))
-			*TyMovement::GetRunSpeedPtr() = 10.0f;
-		ImGui::SetNextItemWidth(sliderWidth);
-		ImGui::SliderFloat("Run Speed", TyMovement::GetRunSpeedPtr(), 0.25f, 100);
+		FloatSliderElement("Run Speed", TyMovement::GetRunSpeedPtr(), 0.25f, 100, 10.0f);
 
 		ImGui::Spacing();
-		if (ImGui::Button("Reset Jump Height"))
-			*TyMovement::GetGroundJumpHeightPtr() = 18.57417488f;
-		ImGui::SetNextItemWidth(sliderWidth);
-		ImGui::SliderFloat("Jump Height", TyMovement::GetGroundJumpHeightPtr(), 0.25f, 100);
+		FloatSliderElement("Jump Height", TyMovement::GetGroundJumpHeightPtr(), 0.25f, 100, 18.57417488f);
 
 		ImGui::Spacing();
-		if (ImGui::Button("Reset Water Jump Height"))
-			*TyMovement::GetWaterJumpHeightPtr() = 10.67707825f;
-		ImGui::SetNextItemWidth(sliderWidth);
-		ImGui::SliderFloat("Water Jump Height", TyMovement::GetWaterJumpHeightPtr(), 0.25f, 100);
+		FloatSliderElement("Water Jump Height", TyMovement::GetWaterJumpHeightPtr(), 0.25f, 100, 10.67707825f);
 
 		ImGui::Spacing();
-		if (ImGui::Button("Reset Airborne Speed"))
-			*TyMovement::GetAirSpeedPtr() = 10.0f;
-		ImGui::SetNextItemWidth(sliderWidth);
-		ImGui::SliderFloat("Airborne Speed", TyMovement::GetAirSpeedPtr(), 0.25f, 100);
+		FloatSliderElement("Airborne Speed", TyMovement::GetAirSpeedPtr(), 0.25f, 100, 10.0f);
 
 		ImGui::Spacing();
-		if (ImGui::Button("Reset Swim Surface Speed"))
-			*TyMovement::GetSwimSurfaceSpeedPtr() = 6.0f;
-		ImGui::SetNextItemWidth(sliderWidth);
-		ImGui::SliderFloat("Swim Surface Speed", TyMovement::GetSwimSurfaceSpeedPtr(), 0.25f, 100);
+		FloatSliderElement("Swim Surface Speed", TyMovement::GetSwimSurfaceSpeedPtr(), 0.25f, 100, 6.0f);
 	}
 	else
 	{
-		if (ImGui::Button("Reset Bull Run Speed"))
-		{
-			*TyMovement::GetBullSpeedPtr() = 35.0f;
-			TyMovement::SetHardcodedBullSpeed();
-		}
+		ImGui::Text("Bull Run Speed");
 		ImGui::SetNextItemWidth(sliderWidth);
 		//Only true when the slider changes
-		if (ImGui::SliderFloat("Bull Run Speed", TyMovement::GetBullSpeedPtr(), 0.25f, 200))
+		if (ImGui::SliderFloat("##Bull Run Speed", TyMovement::GetBullSpeedPtr(), 0.25f, 200))
 		{
+			TyMovement::SetHardcodedBullSpeed();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Reset##Reset Bull Run Speed"))
+		{
+			*TyMovement::GetBullSpeedPtr() = 35.0f;
 			TyMovement::SetHardcodedBullSpeed();
 		}
 	}
@@ -393,10 +384,8 @@ void GUI::FreeCamDrawUI()
 			*TyState::GetTyStatePtr() = 35;
 	}
 
-	if (ImGui::Button("Reset Free Cam Speed"))
-		*Camera::GetFreeCamSpeedPtr() = 0.6f;
-	ImGui::SetNextItemWidth(sliderWidth);
-	ImGui::SliderFloat("Free Cam Speed", Camera::GetFreeCamSpeedPtr(), 0.1f, 25);
+	ImGui::Spacing();
+	FloatSliderElement("Free Cam Speed", Camera::GetFreeCamSpeedPtr(), 0.1f, 25, 0.6f);
 }
 
 void GUI::MiscDrawUI()
