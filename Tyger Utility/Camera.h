@@ -17,7 +17,7 @@ namespace Camera {
         Locked = 17,
         LockOn = 18, // DONT DO IT
         RexDiving = 20, // CAN BE USED TO UN-SOFTLOCK WHEN SWAPPED!!!
-        ShipSpire = 23,
+        CameraFocus = 23,
         Cutscene = 24,
         FreeCam = 28,
     };
@@ -29,7 +29,7 @@ namespace Camera {
         {Locked, "Locked"},
         {LockOn, "Lock On"},
         {RexDiving, "Rex Diving"},
-        {ShipSpire, "Camera Spiral"},
+        {CameraFocus, "Camera Focus"},
         {Cutscene, "Cutscene"},
         {FreeCam, "Free Cam"}
     };
