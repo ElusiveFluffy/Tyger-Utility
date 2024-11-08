@@ -67,7 +67,7 @@ void TygerUtility::OnTyInit() {
 void TygerUtility::SaveSettings() {
     ini::File settings;
 
-    //Create Ty 1 Modding Util section
+    //Create Tyger Util section
     settings.add_section(PluginName);
     //Save the data, [Section name], (Value name, value)
     settings[PluginName].set<bool>("ShowOverlay", GUI::Overlay::ShowOverlay);
