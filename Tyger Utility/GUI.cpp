@@ -32,7 +32,9 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 	//Teleport back to spawn from the position auto set
-	if (msg == WM_KEYDOWN)
+	if (msg == WM_KEYDOWN && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay &&
+		((!TyState::IsBull() && TyState::GetTyState() != 0) ||
+		(TyState::IsBull() && TyState::GetBullState() != -1)))
 	{
 		switch ((int)wParam)
 		{
