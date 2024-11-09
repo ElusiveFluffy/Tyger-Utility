@@ -40,12 +40,20 @@ namespace Camera {
         *(CameraState*)(TyBaseAddress + 0x27EBD0) = cameraState;
     };
 
-    inline Vector3 GetCameraPos() { return *(Vector3*)(TyBaseAddress + 0x27EB78); };
-    inline void SetCameraPos(Vector3 position) { *(Vector3*)(TyBaseAddress + 0x27EB78) = position; };
+    inline Vector3 GetCameraPos() { return *(Vector3*)(TyBaseAddress + 0x27EB98); };
+    inline void SetCameraPos(Vector3 position) { 
+        //*(Vector3*)(TyBaseAddress + 0x27EB78) = position; //Don't change this one, causes jitter (and maybe it getting stuck)
+        *(Vector3*)(TyBaseAddress + 0x27F488) = position; //Important, doesn't jitter, doesn't get stuck
+        //*(Vector3*)(TyBaseAddress + 0x27F4B8) = position;
+        //*(Vector3*)(TyBaseAddress + 0x27F550) = position;
+    };
 
     inline float GetCameraRotYaw() { return *(float*)(TyBaseAddress + 0x27EE10); };
     inline float GetCameraRotPitch() { return *(float*)(TyBaseAddress + 0x27EE0C); };
 
-    inline void SetCameraRotYaw(float rotation) { *(float*)(TyBaseAddress + 0x27EE10) = rotation; };
+    inline void SetCameraRotYaw(float rotation) { 
+        *(float*)(TyBaseAddress + 0x27EE10) = rotation;
+        //*(float*)(TyBaseAddress + 0x27ECC0) = rotation;
+    };
     inline void SetCameraRotPitch(float rotation) { *(float*)(TyBaseAddress + 0x27EE0C) = rotation; };
 }

@@ -65,19 +65,22 @@ void TeleportPositions::LoadPositionsFromFile()
 
 void TeleportPositions::AdvancedTeleportPlayer(TeleportPositions::PositionValues& position)
 {
-	if (!TyState::IsBull())
-	{
-		SetTyPos(position.Position);
-		SetTyRot(position.Rotation);
-		*TyState::GetTyStatePtr() = position.State;
-	}
-	else
-	{
-		SetBullPos(position.Position);
-		SetBullRot(position.Rotation);
-		TyState::SetBullState(position.State);
-	}
+		if (!TyState::IsBull())
+		{
+			SetTyPos(position.Position);
+			SetTyRot(position.Rotation);
+			*TyState::GetTyStatePtr() = position.State;
+		}
+		else
+		{
+			SetBullPos(position.Position);
+			SetBullRot(position.Rotation);
+			TyState::SetBullState(position.State);
+		}
+		Camera::SetCameraState(Camera::Default);
 
-	Camera::SetCameraRotYaw(position.CameraYaw);
-	Camera::SetCameraRotPitch(position.CameraPitch);
+		Camera::SetCameraRotYaw(position.CameraYaw);
+		Camera::SetCameraRotPitch(position.CameraPitch);
+
+		Camera::SetCameraPos(position.CameraPosition);
 }

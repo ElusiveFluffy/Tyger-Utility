@@ -9,6 +9,7 @@ namespace TeleportPositions {
 		Vector3 Position;
 		float Rotation;
 		int State;
+		Vector3 CameraPosition;
 		float CameraYaw;
 		float CameraPitch;
 	};

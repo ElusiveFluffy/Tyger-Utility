@@ -50,9 +50,9 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 				auto positions = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()];
 
 				if (!TyState::IsBull())
-					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), TyState::GetTyState(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), TyState::GetTyState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 				else
-					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 
 				TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()] = positions;
 
@@ -340,6 +340,9 @@ void GUI::PositionDrawUI()
 		SetPositionElements();
 		if (ImGui::Button("Teleport") || (AutoSetPosition && AnyChanged))
 		{
+			auto posDelta = TyBullPos - TyPositionRotation::GetBullPos();
+
+			Camera::SetCameraPos(Camera::GetCameraPos() + posDelta);
 			TyPositionRotation::SetBullPos(TyBullPos);
 			AnyChanged = false;
 		}
