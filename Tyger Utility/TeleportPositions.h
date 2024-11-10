@@ -13,8 +13,10 @@ namespace TeleportPositions {
 		float CameraYaw;
 		float CameraPitch;
 	};
+	inline int CurrentSlot = 0;
+	inline constexpr int SlotCount = 10;
 	inline std::map<int, PositionValues> SpawnPositions{};
-	inline std::map<int, std::array<PositionValues, 8>> SavedPositions{};
+	inline std::map<int, std::array<PositionValues, SlotCount>> SavedPositions{};
 
 	//basically 1.0.0
 	inline constexpr int FileVersionNumber = 100;

@@ -52,7 +52,7 @@ void TeleportPositions::LoadPositionsFromFile()
 
 	int levelID = 0;
 	int versionNumber = 0;
-	std::array<PositionValues, 8> positions{};
+	std::array<PositionValues, SlotCount> positions{};
 	fread(&versionNumber, sizeof(versionNumber), 1, positionFile);
 	//Check to make sure it isn't loading a version newer then what it currently supports
 	if (versionNumber > FileVersionNumber)

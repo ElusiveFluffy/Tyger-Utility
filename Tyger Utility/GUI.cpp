@@ -43,30 +43,43 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			AdvancedTeleportPlayer(position);
 			GUI::Overlay::SetAndShowSlotText("Returned to Spawn", -1);
 			break;
-		}
-		if (VK_F2 <= (int)wParam && (int)wParam <= VK_F9)
-		{
+		// [{
+		case VK_OEM_4:
+			TeleportPositions::CurrentSlot = TeleportPositions::CurrentSlot == 0 ? TeleportPositions::SlotCount - 1 : TeleportPositions::CurrentSlot - 1;
+			GUI::Overlay::SetAndShowSlotText("Changed to Slot", TeleportPositions::CurrentSlot);
+			break;
+		// ]}
+		case VK_OEM_6:
+			TeleportPositions::CurrentSlot = (TeleportPositions::CurrentSlot + 1) % TeleportPositions::SlotCount;
+			GUI::Overlay::SetAndShowSlotText("Changed to Slot", TeleportPositions::CurrentSlot);
+			break;
+		case VK_F5:
 			if (GetKeyState(VK_SHIFT) & 0x8000) {
 				auto positions = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()];
 
 				if (!TyState::IsBull())
-					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), TyState::GetTyState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), TyState::GetTyState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 				else
-					positions[(int)wParam - 0x71] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 
 				TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()] = positions;
 
-				GUI::Overlay::SetAndShowSlotText("Saved slot", (int)wParam - 0x71);
+				GUI::Overlay::SetAndShowSlotText("Saved slot", TeleportPositions::CurrentSlot);
 			}
 			else
 			{
-				auto position = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()][(int)wParam - 0x71];
+				auto position = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()][TeleportPositions::CurrentSlot];
 				if (position.ValidSlot)
 				{
 					AdvancedTeleportPlayer(position);
-					GUI::Overlay::SetAndShowSlotText("Loaded slot", (int)wParam - 0x71);
+					GUI::Overlay::SetAndShowSlotText("Loaded slot", TeleportPositions::CurrentSlot);
+				}
+				else
+				{
+					GUI::Overlay::SetAndShowSlotText("No position in slot", TeleportPositions::CurrentSlot);
 				}
 			}
+			break;
 		}
 	}
 
