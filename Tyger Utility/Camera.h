@@ -11,6 +11,7 @@ namespace Camera {
     enum CameraState
     {
         Default = 5,
+        LookAt = 6,
         Scope = 8,
         CameraOverride = 12,
         FluffyRotationLock = 13,
@@ -23,6 +24,7 @@ namespace Camera {
     };
     inline std::map<CameraState, std::string> StateNames{
         {Default, "Default"},
+        {LookAt, "Look At"},
         {Scope, "Scope"},
         {CameraOverride, "Camera Override"},
         {FluffyRotationLock, "Fluffy Rotation Lock"},
