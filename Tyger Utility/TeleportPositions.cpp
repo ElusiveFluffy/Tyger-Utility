@@ -54,6 +54,12 @@ void TeleportPositions::LoadPositionsFromFile()
 	int versionNumber = 0;
 	std::array<PositionValues, 8> positions{};
 	fread(&versionNumber, sizeof(versionNumber), 1, positionFile);
+	//Check to make sure it isn't loading a version newer then what it currently supports
+	if (versionNumber > FileVersionNumber)
+	{
+		API::LogPluginMessage("Saved Position File is from a Newer Version! Skipping Loading it", Error);
+		return;
+	}
 	while (size != ftell(positionFile)) {
 		fread(&levelID, sizeof(levelID), 1, positionFile);
 		fread(&positions, sizeof(positions), 1, positionFile);
