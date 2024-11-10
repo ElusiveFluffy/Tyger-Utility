@@ -500,6 +500,7 @@ void GUI::Overlay::DrawOverlay()
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetTyRot()));
 
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetTyState()) + ") " + TyStateText()).c_str());
+			DrawDropShadowText(drawList, TyState::GetGroundIDName());
 			std::string tyAnimText = AddSpacesBeforeCapitalAndNum(std::string(TyState::GetTyAnimationName()));
 			DrawDropShadowText(drawList, ("Anim: " + tyAnimText).c_str());
 			//DrawLabelWithNumbers(drawList, "Floor ID:", std::to_string(TyMemoryValues::GetTyFloorID()));
@@ -516,6 +517,7 @@ void GUI::Overlay::DrawOverlay()
 			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetBullRot()));
 
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetBullState()) + ") " + BullStateText()).c_str());
+			DrawDropShadowText(drawList, TyState::GetGroundIDName());
 			std::string bullAnimText = AddSpacesBeforeCapitalAndNum(std::string(TyState::GetBullAnimationName()));
 			DrawDropShadowText(drawList, ("Anim: " + bullAnimText).c_str());
 			DrawDropShadowText(drawList, ("Camera State: (" + std::to_string(Camera::GetCameraState()) + ") " + CameraStateText()).c_str());
