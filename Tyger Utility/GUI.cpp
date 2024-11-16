@@ -63,6 +63,8 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 
 				TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()] = positions;
+				//Save the positions every time its set just in case a crash happens and you lose your unsaved positions
+				TeleportPositions::SavePositionsToFile();
 
 				GUI::Overlay::SetAndShowSlotText("Saved slot", TeleportPositions::CurrentSlot);
 			}
