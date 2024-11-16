@@ -23,4 +23,6 @@ namespace TeleportPositions {
 	void SavePositionsToFile();
 	void LoadPositionsFromFile();
 	void AdvancedTeleportPlayer(TeleportPositions::PositionValues& position);
+
+	void TeleportPosDrawUI();
 }

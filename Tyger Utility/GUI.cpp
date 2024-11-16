@@ -168,6 +168,7 @@ void GUI::DrawUI()
 				}
 				if (ImGui::BeginTabItem("Position")) {
 					PositionDrawUI();
+					TeleportPositions::TeleportPosDrawUI();
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Free Cam")) {

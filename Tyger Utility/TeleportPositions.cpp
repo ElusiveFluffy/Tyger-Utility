@@ -6,6 +6,9 @@
 #include "TyState.h"
 #include "TyPositionRotation.h"
 #include "Camera.h"
+#include "Levels.h"
+
+#include "imgui.h"
 
 using namespace TyPositionRotation;
 
@@ -89,4 +92,31 @@ void TeleportPositions::AdvancedTeleportPlayer(TeleportPositions::PositionValues
 		Camera::SetCameraRotPitch(position.CameraPitch);
 
 		Camera::SetCameraPos(position.CameraPosition);
+}
+
+void TeleportPositions::TeleportPosDrawUI()
+{
+	ImGui::Spacing();
+	ImGui::Text("Saved Slots:");
+	ImGui::Text("Current Slot: %d", CurrentSlot);
+
+	bool noSlotsSaved = true;
+	//Check if the current level has a key
+	if (!SavedPositions.contains(Levels::GetCurrentLevelID()))
+		goto NoSlotsSaved;
+
+	//Get all saved slots for the current level
+	for (int slot = 0; slot < SlotCount; slot++) {
+		PositionValues& position = SavedPositions[Levels::GetCurrentLevelID()][slot];
+		if (position.ValidSlot)
+		{
+			ImGui::Text("Slot %d: %.2f, %.2f, %.2f", slot, position.Position.X, position.Position.Y, position.Position.Z);
+			noSlotsSaved = false;
+		}
+	}
+
+	//Check if no positions have been saved for the current level yet
+	if (noSlotsSaved)
+	NoSlotsSaved:
+		ImGui::Text("No Positions Have Been Saved");
 }
