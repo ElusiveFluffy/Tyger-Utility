@@ -55,14 +55,13 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case VK_F5:
 			if (GetKeyState(VK_SHIFT) & 0x8000) {
-				auto positions = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()];
+				auto& positions = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()];
 
 				if (!TyState::IsBull())
 					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), TyState::GetTyState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 				else
 					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 
-				TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()] = positions;
 				//Save the positions every time its set just in case a crash happens and you lose your unsaved positions
 				TeleportPositions::SavePositionsToFile();
 
