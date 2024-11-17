@@ -44,7 +44,7 @@ void TeleportPositions::LoadPositionsFromFile()
 		return;
 	}
 	fseek(positionFile, 0, SEEK_END); // seek to end of file
-	long size = ftell(positionFile); // get current file pointer
+	long size = ftell(positionFile); // get the file size
 	fseek(positionFile, 0, SEEK_SET); // seek back to beginning of file
 	//Only contains the version number
 	if (size <= 4)
@@ -61,6 +61,7 @@ void TeleportPositions::LoadPositionsFromFile()
 	if (versionNumber > FileVersionNumber)
 	{
 		API::LogPluginMessage("Saved Position File is from a Newer Version! Skipping Loading it", Error);
+		fclose(positionFile);
 		return;
 	}
 	while (size != ftell(positionFile)) {
