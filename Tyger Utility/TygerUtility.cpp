@@ -44,9 +44,17 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
     if (GUI::DisableFallDamage && (*TyState::GetTyStatePtr() == 27 || TyState::GetTyState() == 27) && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && !TyState::IsBull())
         *TyState::GetTyStatePtr() = 26;
 
-    //Just incase the camera state changes
-    if (GUI::EnableFreeCam && Camera::GetCameraState() != Camera::FreeCam)
-        Camera::SetCameraState(Camera::FreeCam);
+    //Just incase the camera state changes (don't try changing it if its trying to play a cutscene)
+    if (GUI::EnableFreeCam && Camera::GetCameraState() != Camera::Cutscene)
+    {
+        if (Camera::GetCameraState() != Camera::FreeCam)
+            Camera::SetCameraState(Camera::FreeCam);
+
+        if (GUI::LockTyMovement) {
+            *TyState::GetTyStatePtr() = 50;
+            TyState::SetBullState(-1);
+        }
+    }
 
     if (API::DrawingGUI())
         API::SetTyInputFlag(NoKeyboardInput, ImGui::GetIO().WantCaptureKeyboard);
