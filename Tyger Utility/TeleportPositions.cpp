@@ -98,8 +98,10 @@ void TeleportPositions::AdvancedTeleportPlayer(TeleportPositions::PositionValues
 void TeleportPositions::TeleportPosDrawUI()
 {
 	ImGui::Spacing();
-	ImGui::Text("Saved Slots:");
+	ImGui::SeparatorText("Saved Slots:");
 	ImGui::Text("Current Slot: %d", CurrentSlot);
+	ImGui::Text("(Shift+F4 to Save, F4 to Load)");
+	ImGui::Separator();
 
 	bool noSlotsSaved = true;
 	//Check if the current level has a key

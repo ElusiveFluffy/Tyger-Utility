@@ -53,7 +53,7 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			TeleportPositions::CurrentSlot = (TeleportPositions::CurrentSlot + 1) % TeleportPositions::SlotCount;
 			GUI::Overlay::SetAndShowSlotText("Changed to Slot", TeleportPositions::CurrentSlot);
 			break;
-		case VK_F5:
+		case VK_F4:
 			if (GetKeyState(VK_SHIFT) & 0x8000) {
 				auto& positions = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()];
 
