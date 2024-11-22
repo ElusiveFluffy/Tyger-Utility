@@ -371,7 +371,7 @@ void GUI::PositionDrawUI()
 void GUI::SetPositionElements()
 {
 	//To be able to copy and paste in the position
-	ImGui::InputText("Position", &PositionText, ImGuiInputTextFlags_CallbackCharFilter, GUI::PositionTextBoxFilter);
+	ImGui::InputText("##Position", &PositionText, ImGuiInputTextFlags_CallbackCharFilter, GUI::PositionTextBoxFilter);
 	if (ImGui::IsItemDeactivated())
 	{
 		std::vector<std::string> positions = Split(PositionText, ",");
@@ -381,11 +381,11 @@ void GUI::SetPositionElements()
 			AnyChanged = true;
 		}
 	}
-	ImGui::Spacing();
+	//ImGui::Spacing();
 	//Or just so if any have previously changed it'll keep it true
-	AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
-	AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
-	AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
+	//AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
+	//AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
+	//AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
 }
 
 void GUI::FreeCamDrawUI()
