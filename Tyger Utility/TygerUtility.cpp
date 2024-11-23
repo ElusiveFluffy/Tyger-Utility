@@ -69,6 +69,10 @@ void TygerUtility::OnTyInit() {
     DWORD oldProtection;
     VirtualProtect(TyMovement::GetSwimSpeedPtr(), 4, PAGE_READWRITE, &oldProtection);
 
+    //Disable the leaderboard to protect the times on it
+    TyMemoryValues::DisableLeaderboard();
+    API::LogPluginMessage("Protecting the Leaderboard");
+
     //Will be set when reaching the title screen or gameplay (5 or 8)
     TyMemoryValues::SetLevelSelect(GUI::EnableLevelSelect);
     API::LogPluginMessage("Startup Set Level Select State");

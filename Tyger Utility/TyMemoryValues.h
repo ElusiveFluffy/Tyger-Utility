@@ -28,6 +28,20 @@ namespace TyMemoryValues {
 	inline int GetTyFloorID() { return *(int*)(TyBaseAddress + 0x2713C0); };
 	inline int GetHiddenOpalCounter() { return *(int*)(TyBaseAddress + 0x2888B4); };
 
+	inline void DisableLeaderboard() { 
+		BYTE nopInstructions[]{ 0x90, 0x90, 0x90, 0x90, 0x90 };
+		BYTE* functionAddress = (BYTE*)(TyBaseAddress + 0x1C8D6D);
+
+		DWORD oldProtection;
+		//Change the memory access to ReadWrite to be able to change the hardcoded value (usually its read only)
+		VirtualProtect(functionAddress, 5, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+		std::copy(std::begin(nopInstructions), std::end(nopInstructions), functionAddress);
+
+		//Set it back to the old access protection
+		VirtualProtect(functionAddress, 5, oldProtection, &oldProtection);
+	}
+
 	//Set
 	inline void SetLevelSelect(bool state) {
 		*(bool*)GetPointerAddress((TyBaseAddress + 0x00286CB0), Offsets::LevelSelectEnable) = state;
