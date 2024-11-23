@@ -65,6 +65,10 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
 }
 
 void TygerUtility::OnTyInit() {
+    //Make it so the swim speed pointer can be writen to, is in read only memory usually
+    DWORD oldProtection;
+    VirtualProtect(TyMovement::GetSwimSpeedPtr(), 4, PAGE_READWRITE, &oldProtection);
+
     //Will be set when reaching the title screen or gameplay (5 or 8)
     TyMemoryValues::SetLevelSelect(GUI::EnableLevelSelect);
     API::LogPluginMessage("Startup Set Level Select State");

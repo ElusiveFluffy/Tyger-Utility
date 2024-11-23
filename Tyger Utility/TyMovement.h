@@ -12,6 +12,7 @@ namespace TyMovement {
 	inline float* GetGroundJumpHeightPtr() { return (float*)(TyBaseAddress + 0x28893C); }; //Default 18.57417488
 	inline float* GetWaterJumpHeightPtr() { return (float*)(TyBaseAddress + 0x288998); }; //Default 10.67707825
 	inline float* GetSwimSurfaceSpeedPtr() { return (float*)(TyBaseAddress + 0x28892C); }; //Default 6.0
+	inline float* GetSwimSpeedPtr() { return (float*)(TyBaseAddress + 0x1F982C); }; //Default 20.0
 	inline float* GetAirSpeedPtr() { return (float*)(TyBaseAddress + 0x288920); }; //Default 10.0
 
 	inline float GetTyHorizontalSpeed() {

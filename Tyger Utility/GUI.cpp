@@ -236,8 +236,11 @@ void GUI::RangsDrawUI()
 	ImGui::EndTable();
 }
 
-void GUI::FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue) {
+void GUI::FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue, const char* toolTipText) {
 	ImGui::Text(text.c_str());
+	//Only add a tooltip if there is text for it
+	if (strlen(toolTipText) != 0)
+		AddToolTip(toolTipText);
 	ImGui::SetNextItemWidth(sliderWidth);
 	ImGui::SliderFloat(("##" + text).c_str(), valuePtr, min, max);
 	ImGui::SameLine();
@@ -261,22 +264,25 @@ void GUI::MovementDrawUI()
 		FloatSliderElement("Glide Up/Down", TyMovement::GetGlideUpDownPtr(), 20, -20, 5.5f);
 
 		ImGui::Spacing();
-		FloatSliderElement("Glide Speed", TyMovement::GetGlideSpeedPtr(), 0.25f, 100, 7.0f);
+		FloatSliderElement("Glide Speed", TyMovement::GetGlideSpeedPtr(), 2.0f, 100, 7.0f);
 
 		ImGui::Spacing();
-		FloatSliderElement("Run Speed", TyMovement::GetRunSpeedPtr(), 0.25f, 100, 10.0f);
+		FloatSliderElement("Run Speed", TyMovement::GetRunSpeedPtr(), 1.0f, 100, 10.0f);
 
 		ImGui::Spacing();
-		FloatSliderElement("Jump Height", TyMovement::GetGroundJumpHeightPtr(), 0.25f, 100, 18.57417488f);
-
-		ImGui::Spacing();
-		FloatSliderElement("Water Jump Height", TyMovement::GetWaterJumpHeightPtr(), 0.25f, 100, 10.67707825f);
+		FloatSliderElement("Jump Height", TyMovement::GetGroundJumpHeightPtr(), 5.0f, 100, 18.57417488f);
 
 		ImGui::Spacing();
 		FloatSliderElement("Airborne Speed", TyMovement::GetAirSpeedPtr(), 0.25f, 100, 10.0f);
 
 		ImGui::Spacing();
-		FloatSliderElement("Swim Surface Speed", TyMovement::GetSwimSurfaceSpeedPtr(), 0.25f, 100, 6.0f);
+		FloatSliderElement("Swim Speed", TyMovement::GetSwimSpeedPtr(), 2.5f, 100, 20.0f, "Increasing this makes the glow effect and low LOD model (only on level load/reload)\nof the opals and rainbow scales bigger too, as they both share the same variable in memory");
+
+		ImGui::Spacing();
+		FloatSliderElement("Swim Surface Speed", TyMovement::GetSwimSurfaceSpeedPtr(), 1.0f, 100, 6.0f);
+
+		ImGui::Spacing();
+		FloatSliderElement("Water Jump Height", TyMovement::GetWaterJumpHeightPtr(), 0.25f, 100, 10.67707825f);
 	}
 	else
 	{
