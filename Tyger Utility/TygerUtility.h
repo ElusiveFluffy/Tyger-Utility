@@ -3,6 +3,7 @@
 namespace TygerUtility
 {
 	void TickBeforeGame(float deltaSeconds);
+	void SetBullSpawnPos();
 	void OnTyInit();
 	void SaveSettings();
 	void LoadSettings();

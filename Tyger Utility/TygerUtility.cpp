@@ -24,6 +24,7 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
     else
         GUI::DrawUI();
     
+    //Set the spawn position
     if (Levels::GetCurrentLevelID() != CurrentLevel && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay)
     {
         if (!TyState::IsBull() && TyState::GetTyState() != 0)
@@ -34,9 +35,10 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
         }
         else if (TyState::IsBull() && TyState::GetBullState() != -1)
         {
+            //Set the current level first to avoid having the thread be created multiple times
             CurrentLevel = Levels::GetCurrentLevelID();
-            TeleportPositions::PositionValues value{ true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), 0, Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
-            TeleportPositions::SpawnPositions.emplace(CurrentLevel, value);
+            //Needs to be delayed a bit, unlike Ty's spawn position
+            CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)SetBullSpawnPos, NULL, 0, nullptr);
         }
     }
 
@@ -64,6 +66,14 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
         GUI::Overlay::PosTextShowSeconds = std::clamp(GUI::Overlay::PosTextShowSeconds - deltaSeconds, 0.0f, 2.0f);
 }
 
+void TygerUtility::SetBullSpawnPos()
+{
+    //Give time for the camera to be set to the normal positon (otherwise its in offset to the right)
+    Sleep(20);
+    TeleportPositions::PositionValues value{ true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), 0, Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+    TeleportPositions::SpawnPositions.emplace(CurrentLevel, value);
+}
+
 void TygerUtility::OnTyInit() {
     //Make it so the swim speed pointer can be writen to, is in read only memory usually
     DWORD oldProtection;
@@ -73,7 +83,7 @@ void TygerUtility::OnTyInit() {
     TyMemoryValues::DisableLeaderboard();
     API::LogPluginMessage("Protecting the Leaderboard");
 
-    //Will be set when reaching the title screen or gameplay (5 or 8)
+    //The game needs to be initialized to set this or it'll just crash
     TyMemoryValues::SetLevelSelect(GUI::EnableLevelSelect);
     API::LogPluginMessage("Startup Set Level Select State");
     //Usually 0 before loading outback
