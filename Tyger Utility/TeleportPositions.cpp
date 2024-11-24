@@ -99,9 +99,9 @@ void TeleportPositions::TeleportPosDrawUI()
 {
 	ImGui::Spacing();
 	ImGui::SeparatorText("Saved Slots:");
-	ImGui::Text("Current Slot: %d", CurrentSlot);
-	ImGui::Text("(Home to Return to the Level Spawn)");
-	ImGui::Text("(Shift+F4 to Save, F4 to Load)");
+	ImGui::Text("Current Slot: %d ('[' and ']' to Cycle Slots)", CurrentSlot);
+	ImGui::Text("('Home' to Return to the Level Spawn)");
+	ImGui::Text("('Shift+F4' to Save, 'F4' to Load)");
 	ImGui::Separator();
 
 	bool noSlotsSaved = true;
