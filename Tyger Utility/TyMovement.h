@@ -12,8 +12,25 @@ namespace TyMovement {
 	inline float* GetGroundJumpHeightPtr() { return (float*)(TyBaseAddress + 0x28893C); }; //Default 18.57417488
 	inline float* GetWaterJumpHeightPtr() { return (float*)(TyBaseAddress + 0x288998); }; //Default 10.67707825
 	inline float* GetSwimSurfaceSpeedPtr() { return (float*)(TyBaseAddress + 0x28892C); }; //Default 6.0
-	inline float* GetSwimSpeedPtr() { return (float*)(TyBaseAddress + 0x1F982C); }; //Default 20.0
 	inline float* GetAirSpeedPtr() { return (float*)(TyBaseAddress + 0x288920); }; //Default 10.0
+
+	inline float SwimSpeed = 20.0f; //Default 20.0
+	//Changes all the required swim speed pointers, which all point to a shared float, to a float that I've created
+	inline void EditSwimSpeedPtrs() {
+		DWORD oldProtection;
+		int* SwimRotationAmount = (int*)(TyBaseAddress + 0x33293);
+		int* SwimRotationSensitivity = (int*)(TyBaseAddress + 0x332A6);
+		int* MakesTyNotPoofOutOfExistenceIDK = (int*)(TyBaseAddress + 0x33D29);
+		int* HardCodedSwimSpeed = (int*)(TyBaseAddress + 0x33DF3);
+		//Change the memory access to ReadWrite to be able to change the pointers (this will set the entire page that contains all the pointers that need to be edited)
+		VirtualProtect(SwimRotationAmount, 4, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+		//Set everything to Tyger Utility's swim speed float
+		*SwimRotationAmount = *SwimRotationSensitivity = *MakesTyNotPoofOutOfExistenceIDK = *HardCodedSwimSpeed = (int)&SwimSpeed;
+
+		//Set it back to the old access protection
+		VirtualProtect(SwimRotationAmount, 4, oldProtection, &oldProtection);
+	}
 
 	inline float GetTyHorizontalSpeed() {
 		//Scale them based on the direction Ty is facing, so when adding them diagonal speeds aren't wrong

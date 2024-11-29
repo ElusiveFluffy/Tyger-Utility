@@ -37,7 +37,7 @@ namespace GUI
 	void DrawUI();
 	void RangsDrawUI();
 	void MovementDrawUI();
-	void FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue, const char* toolTipText = "");
+	void FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue);
 	void PositionDrawUI();
 	void SetPositionElements();
 	void FreeCamDrawUI();

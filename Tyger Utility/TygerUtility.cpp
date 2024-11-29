@@ -75,9 +75,7 @@ void TygerUtility::SetBullSpawnPos()
 }
 
 void TygerUtility::OnTyInit() {
-    //Make it so the swim speed pointer can be writen to, is in read only memory usually
-    DWORD oldProtection;
-    VirtualProtect(TyMovement::GetSwimSpeedPtr(), 4, PAGE_READWRITE, &oldProtection);
+    TyMovement::EditSwimSpeedPtrs();
 
     //Disable the leaderboard to protect the times on it
     TyMemoryValues::DisableLeaderboard();

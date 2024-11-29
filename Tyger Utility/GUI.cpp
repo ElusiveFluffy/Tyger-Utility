@@ -236,11 +236,8 @@ void GUI::RangsDrawUI()
 	ImGui::EndTable();
 }
 
-void GUI::FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue, const char* toolTipText) {
+void GUI::FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue) {
 	ImGui::Text(text.c_str());
-	//Only add a tooltip if there is text for it
-	if (strlen(toolTipText) != 0)
-		AddToolTip(toolTipText);
 	ImGui::SetNextItemWidth(sliderWidth);
 	ImGui::SliderFloat(("##" + text).c_str(), valuePtr, min, max);
 	ImGui::SameLine();
@@ -276,7 +273,7 @@ void GUI::MovementDrawUI()
 		FloatSliderElement("Airborne Speed", TyMovement::GetAirSpeedPtr(), 0.25f, 100, 10.0f);
 
 		ImGui::Spacing();
-		FloatSliderElement("Swim Speed", TyMovement::GetSwimSpeedPtr(), 2.5f, 100, 20.0f, "Increasing this makes the glow effect and low LOD model (only on level load/reload)\nof the opals and rainbow scales bigger too, as they both share the same variable in memory");
+		FloatSliderElement("Swim Speed", &TyMovement::SwimSpeed, 2.5f, 100, 20.0f);
 
 		ImGui::Spacing();
 		FloatSliderElement("Swim Surface Speed", TyMovement::GetSwimSurfaceSpeedPtr(), 1.0f, 100, 6.0f);
