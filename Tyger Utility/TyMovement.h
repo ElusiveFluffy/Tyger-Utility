@@ -34,8 +34,8 @@ namespace TyMovement {
 
 	inline float GetTyHorizontalSpeed() {
 		//Scale them based on the direction Ty is facing, so when adding them diagonal speeds aren't wrong
-		float speed = std::abs(*(float*)(TyBaseAddress + 0x270B98) * std::sin(TyPositionRotation::GetTyRot())) + //X
-			std::abs(*(float*)(TyBaseAddress + 0x270BA0) * std::cos(TyPositionRotation::GetTyRot())); //Z
+		float speed = std::abs(*(float*)(TyBaseAddress + 0x270B98) * std::sin(TyPositionRotation::GetTyYawRot())) + //X
+			std::abs(*(float*)(TyBaseAddress + 0x270BA0) * std::cos(TyPositionRotation::GetTyYawRot())); //Z
 		return (speed);
 	};
 	inline float GetTyVerticalSpeed() { return *(float*)(TyBaseAddress + 0x270B9C); };

@@ -10,7 +10,8 @@ namespace TyPositionRotation {
 	//Ty Pos and Rot
 	inline PtrVector3 GetTyPosPtr() { return { (float*)(TyBaseAddress + 0x270B78), (float*)(TyBaseAddress + 0x270B7C), (float*)(TyBaseAddress + 0x270B80) }; };
 	inline Vector3 GetTyPos() { return { *(float*)(TyBaseAddress + 0x270B78), *(float*)(TyBaseAddress + 0x270B7C), *(float*)(TyBaseAddress + 0x270B80) }; };
-	inline float GetTyRot() { return *(float*)(TyBaseAddress + 0x271C20); };
+	inline float GetTyYawRot() { return *(float*)(TyBaseAddress + 0x271C20); };
+	inline float GetTyPitchRot() { return *(float*)(TyBaseAddress + 0x271C30); };
 
 	//Bull Pos and Rot
 	inline PtrVector3 GetBullPosPtr() { return { (float*)(TyBaseAddress + 0x254268), (float*)(TyBaseAddress + 0x25426C), (float*)(TyBaseAddress + 0x254270) }; };

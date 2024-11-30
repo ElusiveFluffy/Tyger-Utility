@@ -58,7 +58,7 @@ bool WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 				auto& positions = TeleportPositions::SavedPositions[Levels::GetCurrentLevelID()];
 
 				if (!TyState::IsBull())
-					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyRot(), TyState::GetTyState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
+					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetTyPos(), TyPositionRotation::GetTyYawRot(), TyState::GetTyState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 				else
 					positions[TeleportPositions::CurrentSlot] = { true, TyPositionRotation::GetBullPos(), TyPositionRotation::GetUnmodifiedBullRot(), TyState::GetBullState(), Camera::GetCameraPos(), Camera::GetCameraRotYaw(), Camera::GetCameraRotPitch() };
 
@@ -522,7 +522,7 @@ void GUI::Overlay::DrawOverlay()
 			DrawDropShadowText(drawList, "Ty:");
 			Vector3 tyPos = TyPositionRotation::GetTyPos();
 			DrawLabelWithNumbers(drawList, "Pos:", std::format("{:.2f}, {:.2f}, {:.2f}", tyPos.X, tyPos.Y, tyPos.Z));
-			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}", TyPositionRotation::GetTyRot()));
+			DrawLabelWithNumbers(drawList, "Rot:", std::format("{:.3f}, {:.3f}", TyPositionRotation::GetTyYawRot(), TyPositionRotation::GetTyPitchRot()));
 
 			DrawDropShadowText(drawList, ("State: (" + std::to_string(TyState::GetTyState()) + ") " + TyStateText()).c_str());
 			DrawDropShadowText(drawList, TyState::GetGroundIDName());
