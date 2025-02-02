@@ -25,6 +25,8 @@ namespace GUI
 
 	inline float sliderWidth = 270;
 
+	inline bool Hub4PluginExists;
+
 	//Position
 	inline Vector3 TyBullPos;
 	inline std::string PositionText = "";
@@ -35,7 +37,7 @@ namespace GUI
 	void Initialize();
 
 	void DrawUI();
-	void RangsDrawUI();
+	void SaveDrawUI();
 	void MovementDrawUI();
 	void FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue);
 	void PositionDrawUI();

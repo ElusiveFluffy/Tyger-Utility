@@ -185,6 +185,7 @@
     <ClInclude Include="Include\TygerFrameworkAPI.hpp" />
     <ClInclude Include="Levels.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SaveData.h" />
     <ClInclude Include="TeleportPositions.h" />
     <ClInclude Include="TygerUtility.h" />
     <ClInclude Include="TyAttributes.h" />

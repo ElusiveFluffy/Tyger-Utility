@@ -15,6 +15,7 @@
 #include "TyPositionRotation.h"
 #include "Camera.h"
 #include "Levels.h"
+#include "SaveData.h"
 using namespace TyPositionRotation;
 
 //Fonts
@@ -96,6 +97,8 @@ void GUI::Initialize()
 	//Need to cast this, otherwise TygerFramework won't get the return value
 	API::AddPluginWndProc((WndProcFunc)WndProc);
 
+	Levels::InitLevelNames();
+
 	//Setup ImGui Context
 	ImGui::CreateContext();
 
@@ -159,8 +162,8 @@ void GUI::DrawUI()
 			ImGui::Spacing();
 
 			if (ImGui::BeginTabBar("Tool Tabs")) {
-				if (ImGui::BeginTabItem("Rangs")) {
-					RangsDrawUI();
+				if (ImGui::BeginTabItem("Save")) {
+					SaveDrawUI();
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Movement")) {
@@ -193,47 +196,157 @@ void GUI::DrawUI()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void GUI::RangsDrawUI()
+LevelCode currentLevel = Z1;
+void GUI::SaveDrawUI()
 {
-	if (ImGui::Button("Give All Rangs"))
-		TyAttributes::SetAllRangs(true);
-	ImGui::SameLine();
-	if (ImGui::Button("Remove All Rangs"))
-		TyAttributes::SetAllRangs(false);
+	auto saveData = SaveData::GetData();
 
-	if (ImGui::Button("Give Element Rangs"))
-		TyAttributes::SetElementRangs(true);
-	ImGui::SameLine();
-	if (ImGui::Button("Give Techno Rangs"))
-		TyAttributes::SetTechnoRangs(true);
+	ImGui::Text("Some Things Only Update After Reloading the Level");
+	ImGui::Checkbox("Hardcore", &saveData->IsHardcore);
+	ImGui::InputScalar("Lives", ImGuiDataType_U16, &saveData->Lives, &IntStepAmount);
 
-	if (ImGui::BeginTable("Rangs", 3)) {
-		//Row 1
-		ImGui::TableNextColumn(); ImGui::Checkbox("2nd Rang", TyAttributes::GetRangState(TyAttributes::Two));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Swim", TyAttributes::GetRangState(TyAttributes::Swim));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Dive", TyAttributes::GetRangState(TyAttributes::Dive));
+	if (ImGui::TreeNode("Attributes")) {
+		if (ImGui::BeginTable("Attributes", 3)) {
+			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100);
+			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100);
+			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
 
-		//Row 2
-		ImGui::TableNextColumn(); ImGui::Checkbox("Boomerang", TyAttributes::GetRangState(TyAttributes::IronBark));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Flamerang", TyAttributes::GetRangState(TyAttributes::Flame));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Frostyrang", TyAttributes::GetRangState(TyAttributes::Frosty));
-
-		//Row 3
-		ImGui::TableNextColumn(); ImGui::Checkbox("Zappyrang", TyAttributes::GetRangState(TyAttributes::Zappy));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Aquarang", TyAttributes::GetRangState(TyAttributes::Aqua));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Zoomerang", TyAttributes::GetRangState(TyAttributes::Zoomer));
-
-		//Row 4
-		ImGui::TableNextColumn(); ImGui::Checkbox("Multirang", TyAttributes::GetRangState(TyAttributes::Multi));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Infrarang", TyAttributes::GetRangState(TyAttributes::Infra));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Megarang", TyAttributes::GetRangState(TyAttributes::Mega));
-
-		//Row 5
-		ImGui::TableNextColumn(); ImGui::Checkbox("Kaboomarang", TyAttributes::GetRangState(TyAttributes::Kaboom));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Chronorang", TyAttributes::GetRangState(TyAttributes::Chrono));
-		ImGui::TableNextColumn(); ImGui::Checkbox("Doomarang", TyAttributes::GetRangState(TyAttributes::Doom));
+			ImGui::TableNextColumn(); ImGui::Checkbox("Swim", &saveData->AttributeData.LearntToSwim);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Dive", &saveData->AttributeData.LearntToDive);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Double Health", &saveData->AttributeData.GotExtraHealth);
+		}
+		ImGui::EndTable();
+		ImGui::TreePop();
 	}
-	ImGui::EndTable();
+	if (ImGui::TreeNode("Rangs"))
+	{
+		if (ImGui::Button("Give All Rangs"))
+			TyAttributes::SetAllRangs(true);
+		ImGui::SameLine();
+		if (ImGui::Button("Remove All Rangs"))
+			TyAttributes::SetAllRangs(false);
+
+		if (ImGui::Button("Give Element Rangs"))
+			TyAttributes::SetElementRangs(true);
+		ImGui::SameLine();
+		if (ImGui::Button("Give Techno Rangs"))
+			TyAttributes::SetTechnoRangs(true);
+
+		if (ImGui::BeginTable("Rangs", 3)) {
+			//Row 1
+			ImGui::TableNextColumn(); ImGui::Checkbox("2nd Rang", &saveData->AttributeData.GotSecondRang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Boomerang", &saveData->AttributeData.GotBoomerang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Flamerang", &saveData->AttributeData.GotFlamerang);
+
+			//Row 2
+			ImGui::TableNextColumn(); ImGui::Checkbox("Frostyrang", &saveData->AttributeData.GotFrostyrang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Zappyrang", &saveData->AttributeData.GotZappyrang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Aquarang", &saveData->AttributeData.GotAquarang);
+
+			//Row 3
+			ImGui::TableNextColumn(); ImGui::Checkbox("Zoomerang", &saveData->AttributeData.GotZoomerang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Multirang", &saveData->AttributeData.GotMultirang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Infrarang", &saveData->AttributeData.GotInfrarang);
+
+			//Row 4
+			ImGui::TableNextColumn(); ImGui::Checkbox("Megarang", &saveData->AttributeData.GotMegarang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Kaboomarang", &saveData->AttributeData.GotKaboomerang);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Chronorang", &saveData->AttributeData.GotChronorang);
+
+			//Row 5
+			ImGui::TableNextColumn(); ImGui::Checkbox("Doomarang", &saveData->AttributeData.GotDoomerang);
+		}
+		ImGui::EndTable();
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("LevelData")) {
+		ImGui::Combo("Level", (int*)&currentLevel, Levels::Names, 24);
+
+		LevelData* levelData = &saveData->LevelData[currentLevel];
+		ImGui::InputScalar("Times Entered", ImGuiDataType_U8, &levelData->TimesEntered, &IntStepAmount);
+		if (ImGui::TreeNode("Thunder Eggs"))
+		{
+			if (ImGui::BeginTable("Thunder Eggs", 4)) {
+				//Row 1
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 1", &levelData->ThunderEggs[0]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 2", &levelData->ThunderEggs[1]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 3", &levelData->ThunderEggs[2]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 4", &levelData->ThunderEggs[3]);
+
+				//Row 2
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 5", &levelData->ThunderEggs[4]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 6", &levelData->ThunderEggs[5]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 7", &levelData->ThunderEggs[6]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("TE 8", &levelData->ThunderEggs[7]);
+			}
+			ImGui::EndTable();
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Golden Cogs"))
+		{
+			if (ImGui::BeginTable("Golden Cogs", 3)) {
+				//Row 1
+				ImGui::TableNextColumn(); ImGui::Checkbox("Cog 1", &levelData->GoldenCogs[0]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Cog 2", &levelData->GoldenCogs[1]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Cog 3", &levelData->GoldenCogs[2]);
+
+				//Row 2
+				ImGui::TableNextColumn(); ImGui::Checkbox("Cog 4", &levelData->GoldenCogs[3]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Cog 5", &levelData->GoldenCogs[4]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Cog 6", &levelData->GoldenCogs[5]);
+
+				//Row 3
+				ImGui::TableNextColumn(); ImGui::Checkbox("Gog 7", &levelData->GoldenCogs[6]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Gog 8", &levelData->GoldenCogs[7]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Gog 9", &levelData->GoldenCogs[8]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Gog 10", &levelData->GoldenCogs[9]);
+			}
+			ImGui::EndTable();
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Bilbies"))
+		{
+			if (ImGui::BeginTable("Bilbies", 3)) {
+				//Row 1
+				ImGui::TableNextColumn(); ImGui::Checkbox("Bilby 1", &levelData->Bilbies[0]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Bilby 2", &levelData->Bilbies[1]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Bilby 3", &levelData->Bilbies[2]);
+
+				//Row 2
+				ImGui::TableNextColumn(); ImGui::Checkbox("Bilby 4", &levelData->Bilbies[3]);
+				ImGui::TableNextColumn(); ImGui::Checkbox("Bilby 5", &levelData->Bilbies[4]);
+			}
+			ImGui::EndTable();
+			ImGui::TreePop();
+		}
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("Talismans")) {
+
+		if (ImGui::BeginTable("Talismans", 3)) {
+			//Row 1
+			ImGui::TableNextColumn(); ImGui::Checkbox("Talisman 1", &saveData->Talismans[0]);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Talisman 2", &saveData->Talismans[1]);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Talisman 3", &saveData->Talismans[2]);
+
+			//Row 2
+			ImGui::TableNextColumn(); ImGui::Checkbox("Talisman 4", &saveData->Talismans[3]);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Talisman 5", &saveData->Talismans[4]);
+		}
+		ImGui::EndTable();
+		if (ImGui::BeginTable("Talismans Placed", 3)) {
+			//Row 1
+			ImGui::TableNextColumn(); ImGui::Checkbox("Placed 1", &saveData->TalismansPlaced[0]);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Placed 2", &saveData->TalismansPlaced[1]);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Placed 3", &saveData->TalismansPlaced[2]);
+
+			//Row 2
+			ImGui::TableNextColumn(); ImGui::Checkbox("Placed 4", &saveData->TalismansPlaced[3]);
+			ImGui::TableNextColumn(); ImGui::Checkbox("Placed 5", &saveData->TalismansPlaced[4]);
+		}
+		ImGui::EndTable();
+		ImGui::TreePop();
+	}
 }
 
 void GUI::FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue) {

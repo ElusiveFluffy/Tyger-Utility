@@ -86,6 +86,8 @@ void TygerUtility::OnTyInit() {
     API::LogPluginMessage("Startup Set Level Select State");
     //Usually 0 before loading outback
     *TyMovement::GetBullSpeedPtr() = 35.0f;
+
+    GUI::Hub4PluginExists = fs::exists(API::GetPluginDirectory() / "Hub 4 Restored.dll");
 }
 
 void TygerUtility::SaveSettings() {
