@@ -1,5 +1,6 @@
 #pragma once
 #include "TyMemoryValues.h"
+#include "Levels.h"
 
 //Structure taken from TygerMemory, thanks Matt for this
 enum LevelCode {
@@ -150,13 +151,45 @@ struct SaveDataStruct {
 	int CricketBatsBurnt;
 	bool CheatsUsed;
 	bool CheatsUsed2;
-	bool Unk4;
+	bool ValidSpeedrun;
 	bool Unk5;
 	int SkinId;
 };
 
 namespace SaveData {
+	typedef int(__thiscall* TyCountOpals_t)(void* properties, LevelCode levelIndex);
+
+
 	inline SaveDataStruct* GetData() {
-		return (SaveDataStruct*)(*(int*)(TyMemoryValues::TyBaseAddress + 0x288730));
+		return (SaveDataStruct*)(*(int*)(TyBaseAddress + 0x288730));
 	}
+	inline void SetFmvWatched(FMV fmv, bool value) {
+		uint8_t fmvWatchedByte = GetData()->FmvsWatched;
+		uint8_t bitMask = (1 << fmv);
+		if (value)
+			fmvWatchedByte |= bitMask;
+		else
+			fmvWatchedByte &= ~bitMask;
+		GetData()->FmvsWatched = fmvWatchedByte;
+	}
+	inline bool GetFmvWatched(FMV fmv)
+	{
+		uint8_t fmvWatchedByte = GetData()->FmvsWatched;
+		uint8_t bitMask = (1 << static_cast<int>(fmv));
+		return (fmvWatchedByte & bitMask) != 0;
+	}
+
+	void GiveAllOpals(LevelCode level);
+	void ResetAllOpals(LevelCode level);
+
+	inline int CountLevelOpals(LevelCode level) {
+		return ((TyCountOpals_t)(TyBaseAddress + 0xf7060))((void*)(TyBaseAddress + 0x2888ac), level);
+	}
+
+	int SetOpals(int opalCount, LevelCode level);
+
+	void SetPictureFrame(int id, bool state);
+	bool GetPictureFrame(int id);
+
+	void SetAllLevelPictures(LevelCode level, bool state);
 }

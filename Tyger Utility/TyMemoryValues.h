@@ -28,6 +28,12 @@ namespace TyMemoryValues {
 	inline int GetTyFloorID() { return *(int*)(TyBaseAddress + 0x2713C0); };
 	inline int GetHiddenOpalCounter() { return *(int*)(TyBaseAddress + 0x2888B4); };
 
+	typedef int(__thiscall* TySetGotDoubleHealth_t)(void* gameData, bool newState);
+
+	inline void SetGotDoubleHealth(bool newState) {
+		((TySetGotDoubleHealth_t)(TyBaseAddress + 0xf7ec0))((void*)(TyBaseAddress + 0x2888ac), newState);
+	}
+
 	inline void DisableLeaderboard() { 
 		BYTE nopInstructions[]{ 0x90, 0x90, 0x90, 0x90, 0x90 };
 		BYTE* functionAddress = (BYTE*)(TyBaseAddress + 0x1C8D6D);
