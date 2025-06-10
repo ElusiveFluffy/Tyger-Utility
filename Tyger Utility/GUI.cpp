@@ -724,6 +724,8 @@ void GUI::MiscDrawUI()
 
 	ImGui::Checkbox("Ty Invincibility", TyState::TyInvincibility());
 	AddToolTip("Only affects Ty, doesn't affect Bull");
+
+	ImGui::Checkbox("Draw Object Bounds", TyMemoryValues::DrawObjectBounds());
 }
 
 void GUI::AddToolTip(const char* toolTip)
