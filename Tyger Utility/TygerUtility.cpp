@@ -63,6 +63,9 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
 
     if (API::DrawingGUI())
         API::SetTyInputFlag(NoKeyboardInput, ImGui::GetIO().WantCaptureKeyboard);
+    else
+        //Make is so if you were typing in a text box when closing the menu it won't continue stopping keyboard input because imgui hasn't updated the capture keyboard state
+        API::SetTyInputFlag(NoKeyboardInput, false);
 
     //Decrease the counter for the text using delta seconds
     if (GUI::Overlay::PosTextShowSeconds != 0)
