@@ -1,88 +1,71 @@
 #include "TyAttributes.h"
+#include "GUI.h"
+#include "SaveData.h"
 
 void TyAttributes::SetAllRangs(bool newValue)
 {
-	std::vector<UINT> addresses = TyMemoryValues::GetPointerAddresses(RangBaseAddress(),
-		{ RangOffsets::Dive, RangOffsets::Swim, RangOffsets::Two, RangOffsets::Aqua, RangOffsets::IronBark, RangOffsets::Frosty, RangOffsets::Flame, RangOffsets::Zappy, RangOffsets::Kaboom, RangOffsets::Doom, RangOffsets::Mega, RangOffsets::Zoomer, RangOffsets::Infra, RangOffsets::Multi, RangOffsets::Chrono });
+	auto saveData = SaveData::GetData();
 
-	for (UINT address : addresses) {
-		*(bool*)address = newValue;
+	//Instantly show/hide second rang
+	*(bool*)(TyBaseAddress + 0x27194C) = newValue;
+	saveData->AttributeData.GotSecondRang = newValue;
+	saveData->AttributeData.GotAquarang = newValue;
+	saveData->AttributeData.GotFlamerang = newValue;
+	saveData->AttributeData.GotFrostyrang = newValue;
+	saveData->AttributeData.GotZappyrang = newValue;
+	saveData->AttributeData.GotZoomerang = newValue;
+	saveData->AttributeData.GotMultirang = newValue;
+	saveData->AttributeData.GotInfrarang = newValue;
+	saveData->AttributeData.GotMegarang = newValue;
+	saveData->AttributeData.GotKaboomerang = newValue;
+	saveData->AttributeData.GotChronorang = newValue;
+	saveData->AttributeData.GotDoomerang = newValue;
+
+	if (GUI::Hub4PluginExists) {
+		//Smasharang
+		saveData->Talismans[0] = newValue;
+		//New technorang 1
+		saveData->Talismans[1] = newValue;
+		//New technorang 2
+		saveData->Talismans[2] = newValue;
 	}
 }
 
 void TyAttributes::SetElementRangs(bool newValue)
 {
-	std::vector<UINT> addresses = TyMemoryValues::GetPointerAddresses(RangBaseAddress(),
-		{ RangOffsets::Dive, RangOffsets::Swim, RangOffsets::Two, RangOffsets::Aqua, RangOffsets::IronBark, RangOffsets::Frosty, RangOffsets::Flame, RangOffsets::Zappy });
+	auto saveData = SaveData::GetData();
 
-	for (UINT address : addresses) {
-		*(bool*)address = newValue;
+	//Instantly show/hide second rang
+	*(bool*)(TyBaseAddress + 0x27194C) = newValue;
+	saveData->AttributeData.GotSecondRang = newValue;
+	saveData->AttributeData.GotAquarang = newValue;
+	saveData->AttributeData.GotBoomerang = newValue;
+	saveData->AttributeData.GotFlamerang = newValue;
+	saveData->AttributeData.GotFrostyrang = newValue;
+	saveData->AttributeData.GotZappyrang = newValue;
+
+	if (GUI::Hub4PluginExists) {
+		//Smasharang
+		saveData->Talismans[0] = newValue;
 	}
 }
 
 void TyAttributes::SetTechnoRangs(bool newValue)
 {
-	std::vector<UINT> addresses = TyMemoryValues::GetPointerAddresses(RangBaseAddress(),
-		{ RangOffsets::Kaboom, RangOffsets::Doom, RangOffsets::Mega, RangOffsets::Zoomer, RangOffsets::Infra, RangOffsets::Multi, RangOffsets::Chrono });
+	auto saveData = SaveData::GetData();
 
-	for (UINT address : addresses) {
-		*(bool*)address = newValue;
+	saveData->AttributeData.GotZoomerang = newValue;
+	saveData->AttributeData.GotMultirang = newValue;
+	saveData->AttributeData.GotInfrarang = newValue;
+	saveData->AttributeData.GotMegarang = newValue;
+	saveData->AttributeData.GotKaboomerang = newValue;
+	saveData->AttributeData.GotChronorang = newValue;
+	saveData->AttributeData.GotDoomerang = newValue;
+
+	if (GUI::Hub4PluginExists) {
+		//New technorang 1
+		saveData->Talismans[1] = newValue;
+		//New technorang 2
+		saveData->Talismans[2] = newValue;
 	}
-}
-
-bool* TyAttributes::GetRangState(Rangs rang)
-{
-	UINT offset = 0;
-	switch (rang)
-	{
-	case TyAttributes::Two:
-		offset = RangOffsets::Two;
-		break;
-	case TyAttributes::Dive:
-		offset = RangOffsets::Dive;
-		break;
-	case TyAttributes::Swim:
-		offset = RangOffsets::Swim;
-		break;
-	case TyAttributes::Aqua:
-		offset = RangOffsets::Aqua;
-		break;
-	case TyAttributes::IronBark:
-		offset = RangOffsets::IronBark;
-		break;
-	case TyAttributes::Flame:
-		offset = RangOffsets::Flame;
-		break;
-	case TyAttributes::Frosty:
-		offset = RangOffsets::Frosty;
-		break;
-	case TyAttributes::Zappy:
-		offset = RangOffsets::Zappy;
-		break;
-	case TyAttributes::Zoomer:
-		offset = RangOffsets::Zoomer;
-		break;
-	case TyAttributes::Multi:
-		offset = RangOffsets::Multi;
-		break;
-	case TyAttributes::Infra:
-		offset = RangOffsets::Infra;
-		break;
-	case TyAttributes::Mega:
-		offset = RangOffsets::Mega;
-		break;
-	case TyAttributes::Kaboom:
-		offset = RangOffsets::Kaboom;
-		break;
-	case TyAttributes::Chrono:
-		offset = RangOffsets::Chrono;
-		break;
-	case TyAttributes::Doom:
-		offset = RangOffsets::Doom;
-		break;
-	default:
-		break;
-	}
-
-	return (bool*)TyMemoryValues::GetPointerAddress(RangBaseAddress(), offset);
 }
