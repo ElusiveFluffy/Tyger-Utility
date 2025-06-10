@@ -1,5 +1,8 @@
 #include "TygerUtility.h"
 #include "GUI.h"
+#include "MovementGUI.h"
+#include "FreecamGUI.h"
+#include "MiscGUI.h"
 #include "ini.h"
 #include "TeleportPositions.h"
 #include <filesystem>
@@ -17,7 +20,7 @@ namespace fs = std::filesystem;
 void TygerUtility::TickBeforeGame(float deltaSeconds)
 {
     //Update it after Ty uses a charge bite in game
-    GUI::ChargeBiteCount = *TyAttributes::GetChargeBiteOpalCounterPtr() / 100;
+    MiscGUI::ChargeBiteCount = *TyAttributes::GetChargeBiteOpalCounterPtr() / 100;
 
     if (!GUI::init)
         GUI::Initialize();
@@ -43,16 +46,16 @@ void TygerUtility::TickBeforeGame(float deltaSeconds)
     }
 
     //The second Ty state one is a bit behind but will always be Ty's current state, while the first is more like Ty's next state
-    if (GUI::DisableFallDamage && (*TyState::GetTyStatePtr() == 27 || TyState::GetTyState() == 27) && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && !TyState::IsBull())
+    if (MovementGUI::DisableFallDamage && (*TyState::GetTyStatePtr() == 27 || TyState::GetTyState() == 27) && TyMemoryValues::GetTyGameState() == TyMemoryValues::Gameplay && !TyState::IsBull())
         *TyState::GetTyStatePtr() = 26;
 
     //Just incase the camera state changes (don't try changing it if its trying to play a cutscene)
-    if (GUI::EnableFreeCam && Camera::GetCameraState() != Camera::Cutscene)
+    if (FreecamGUI::EnableFreeCam && Camera::GetCameraState() != Camera::Cutscene)
     {
         if (Camera::GetCameraState() != Camera::FreeCam)
             Camera::SetCameraState(Camera::FreeCam);
 
-        if (GUI::LockTyMovement) {
+        if (FreecamGUI::LockTyMovement) {
             *TyState::GetTyStatePtr() = 50;
             TyState::SetBullState(-1);
         }

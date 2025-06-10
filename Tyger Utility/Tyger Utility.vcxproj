@@ -169,6 +169,7 @@
     <ClInclude Include="Fonts\TyFont.hpp" />
     <ClInclude Include="Fonts\TyNumberFont.hpp" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="FreecamGUI.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Include\ImGui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Include\ImGui\backends\imgui_impl_opengl3_loader.h" />
@@ -184,8 +185,11 @@
     <ClInclude Include="Include\TygerFrameworkAPI.h" />
     <ClInclude Include="Include\TygerFrameworkAPI.hpp" />
     <ClInclude Include="Levels.h" />
+    <ClInclude Include="MiscGUI.h" />
+    <ClInclude Include="MovementGUI.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SaveData.h" />
+    <ClInclude Include="SaveDataGUI.h" />
     <ClInclude Include="TeleportPositions.h" />
     <ClInclude Include="TygerUtility.h" />
     <ClInclude Include="TyAttributes.h" />
@@ -197,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="FreecamGUI.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Include\ImGui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Include\ImGui\backends\imgui_impl_win32.cpp" />
@@ -205,6 +210,8 @@
     <ClCompile Include="Include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Include\ImGui\misc\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="MiscGUI.cpp" />
+    <ClCompile Include="MovementGUI.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -212,6 +219,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SaveData.cpp" />
+    <ClCompile Include="SaveDataGUI.cpp" />
     <ClCompile Include="TeleportPositions.cpp" />
     <ClCompile Include="TygerUtility.cpp" />
     <ClCompile Include="TyAttributes.cpp" />

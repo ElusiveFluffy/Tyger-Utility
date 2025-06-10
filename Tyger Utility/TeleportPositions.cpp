@@ -1,6 +1,8 @@
 #include "TeleportPositions.h"
 #include "TygerUtility.h"
 #include "TygerFrameworkAPI.hpp"
+#include "GUI.h"
+#include <regex>
 
 //Ty Memory
 #include "TyState.h"
@@ -8,7 +10,7 @@
 #include "Camera.h"
 #include "Levels.h"
 
-#include "imgui.h"
+#include "imgui_stdlib.h" //For std::string
 
 using namespace TyPositionRotation;
 
@@ -93,6 +95,99 @@ void TeleportPositions::AdvancedTeleportPlayer(TeleportPositions::PositionValues
 		Camera::SetCameraRotPitch(position.CameraPitch);
 
 		Camera::SetCameraPos(position.CameraPosition);
+}
+
+int TeleportPositions::PositionTextBoxFilter(ImGuiInputTextCallbackData* data)
+{
+	//Only allow stuff that matches any of these characters
+	if (strchr("-1234567890,. ", (char)data->EventChar))
+		return 0;
+	return 1;
+}
+
+std::vector<std::string> Split(const std::string str, const std::string regex_str)
+{
+	std::regex regexz(regex_str);
+	std::vector<std::string> list(std::sregex_token_iterator(str.begin(), str.end(), regexz, -1),
+		std::sregex_token_iterator());
+	return list;
+}
+
+void TeleportPositions::SetPositionElements()
+{
+	//To be able to copy and paste in the position
+	ImGui::InputText("##Position", &PositionText, ImGuiInputTextFlags_CallbackCharFilter, PositionTextBoxFilter);
+	if (ImGui::IsItemDeactivated())
+	{
+		std::vector<std::string> positions = Split(PositionText, ",");
+		if (positions.size() == 3 && PositionText != std::format("{:.3f}, {:.3f}, {:.3f}", TyBullPos.X, TyBullPos.Y, TyBullPos.Z))
+		{
+			TyBullPos = { std::stof(positions[0]), std::stof(positions[1]), std::stof(positions[2]) };
+			AnyChanged = true;
+		}
+	}
+	//ImGui::Spacing();
+	//Or just so if any have previously changed it'll keep it true
+	//AnyChanged = ImGui::InputScalar("X", ImGuiDataType_Float, &TyBullPos.X, &FloatStepAmount) || AnyChanged;
+	//AnyChanged = ImGui::InputScalar("Y", ImGuiDataType_Float, &TyBullPos.Y, &FloatStepAmount) || AnyChanged;
+	//AnyChanged = ImGui::InputScalar("Z", ImGuiDataType_Float, &TyBullPos.Z, &FloatStepAmount) || AnyChanged;
+}
+
+void TeleportPositions::PositionDrawUI()
+{
+	ImGui::Checkbox("Auto Teleport", &AutoSetPosition);
+	GUI::AddToolTip("Automatically set's Ty/Bull's position when they're edited");
+	ImGui::SameLine();
+	ImGui::Checkbox("Don't Auto Update Position", &DontAutoUpdatePosition);
+
+	if (!TyState::IsBull())
+	{
+		//Only auto update it if none have changed
+		if (!AnyChanged && !DontAutoUpdatePosition)
+		{
+			TyBullPos = TyPositionRotation::GetTyPos();
+			PositionText = std::format("{:.3f}, {:.3f}, {:.3f}", TyBullPos.X, TyBullPos.Y, TyBullPos.Z);
+		}
+		ImGui::Text("Ty Position (X, Y, Z):");
+		SetPositionElements();
+		if (ImGui::Button("Teleport") || (AutoSetPosition && AnyChanged))
+		{
+			auto posDelta = TyBullPos - TyPositionRotation::GetTyPos();
+
+			Camera::SetCameraPos(Camera::GetCameraPos() + posDelta);
+			TyPositionRotation::SetTyPos(TyBullPos);
+			AnyChanged = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Update Position"))
+		{
+			TyBullPos = TyPositionRotation::GetTyPos();
+			PositionText = std::format("{:.3f}, {:.3f}, {:.3f}", TyBullPos.X, TyBullPos.Y, TyBullPos.Z);
+		}
+	}
+	else
+	{
+		//Only auto update it if none have changed
+		if (!AnyChanged && !DontAutoUpdatePosition)
+		{
+			TyBullPos = TyPositionRotation::GetBullPos();
+			PositionText = std::format("{:.3f}, {:.3f}, {:.3f}", TyBullPos.X, TyBullPos.Y, TyBullPos.Z);
+		}
+		ImGui::Text("Bull Position (X, Y, Z):");
+		SetPositionElements();
+		if (ImGui::Button("Teleport") || (AutoSetPosition && AnyChanged))
+		{
+			auto posDelta = TyBullPos - TyPositionRotation::GetBullPos();
+
+			Camera::SetCameraPos(Camera::GetCameraPos() + posDelta);
+			TyPositionRotation::SetBullPos(TyBullPos);
+			AnyChanged = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Update Position"))
+			TyBullPos = TyPositionRotation::GetBullPos();
+	}
+
 }
 
 void TeleportPositions::TeleportPosDrawUI()

@@ -37,6 +37,12 @@
     <Filter Include="Include\ImGui\misc\cpp">
       <UniqueIdentifier>{a5a5477f-edf1-4704-a81a-ce474c0e5427}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{2c3ba54d-425d-4149-a47a-5aa9491b3b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{13381459-dbed-4aff-80ad-b4717502e2d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -77,9 +83,6 @@
     </ClInclude>
     <ClInclude Include="Include\ImGui\backends\imgui_impl_win32.h">
       <Filter>Include\ImGui\backends</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Fonts\TyFont.hpp">
       <Filter>Fonts</Filter>
@@ -126,6 +129,21 @@
     <ClInclude Include="SaveData.h">
       <Filter>Header Files\Ty Memory Values</Filter>
     </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveDataGUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementGUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="FreecamGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MiscGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -152,9 +170,6 @@
     <ClCompile Include="Include\ImGui\backends\imgui_impl_win32.cpp">
       <Filter>Include\ImGui\backends</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TyMemoryValues.cpp">
       <Filter>Source Files\Ty Memory Values</Filter>
     </ClCompile>
@@ -171,6 +186,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SaveData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveDataGUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementGUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="FreecamGUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MiscGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

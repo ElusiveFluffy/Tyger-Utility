@@ -8,13 +8,6 @@ namespace GUI
 	inline bool init;
 
 	inline bool EnableLevelSelect;
-	inline bool DisableFallDamage;
-	inline bool AutoSetPosition = true;
-	inline bool DontAutoUpdatePosition;
-	inline bool EnableFreeCam;
-	inline bool LockTyMovement = true;
-	//Mostly used for the count in the UI and to easily set the amount of charge bites
-	inline ImU8 ChargeBiteCount;
 
 	inline float FontSize = 20;
 	inline ImFont* TyFont;
@@ -27,28 +20,16 @@ namespace GUI
 
 	inline bool Hub4PluginExists;
 
-	//Position
-	inline Vector3 TyBullPos;
-	inline std::string PositionText = "";
-	inline bool AnyChanged;
-
 	void AddToolTip(const char* toolTip);
 
 	void Initialize();
 
 	void DrawUI();
-	void SaveDrawUI();
-	void MovementDrawUI();
 	void FloatSliderElement(std::string text, float* valuePtr, float min, float max, float defaultValue);
-	void PositionDrawUI();
-	void SetPositionElements();
-	void FreeCamDrawUI();
-	void MiscDrawUI();
 
 	void SetImGuiStyle();
 	bool ImGuiWantCaptureMouse();
 
-	int PositionTextBoxFilter(ImGuiInputTextCallbackData* data);
 
 	class Overlay {
 	public:
