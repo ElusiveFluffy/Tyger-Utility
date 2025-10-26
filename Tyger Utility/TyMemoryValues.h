@@ -30,7 +30,16 @@ namespace TyMemoryValues {
 
 	typedef int(__thiscall* TySetGotDoubleHealth_t)(void* gameData, bool newState);
 
-	inline bool* DrawObjectBounds() { return (bool*)(TyBaseAddress + 0x293b0c); };
+	enum DrawBoundsFlags {
+		DrawObjectBounds = 1,
+		DrawSubObjectBounds = 2
+	};
+	inline void SetDrawObjectBoundsFlag(DrawBoundsFlags flag, bool enableFlag) {
+		if (enableFlag)
+			*(char*)(TyBaseAddress + 0x293b0c) |= flag;
+		else
+			*(char*)(TyBaseAddress + 0x293b0c) &= ~flag;
+	};
 
 	inline void SetGotDoubleHealth(bool newState) {
 		((TySetGotDoubleHealth_t)(TyBaseAddress + 0xf7ec0))((void*)(TyBaseAddress + 0x2888ac), newState);

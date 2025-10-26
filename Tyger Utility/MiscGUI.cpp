@@ -20,5 +20,10 @@ void MiscGUI::MiscDrawUI()
 	ImGui::Checkbox("Ty Invincibility", TyState::TyInvincibility());
 	GUI::AddToolTip("Only affects Ty, doesn't affect Bull");
 
-	ImGui::Checkbox("Draw Object Bounds", TyMemoryValues::DrawObjectBounds());
+	ImGui::Spacing();
+	ImGui::Text("Debug Draw");
+	if (ImGui::Checkbox("Draw Object Bounds", &DrawObjectBounds))
+		TyMemoryValues::SetDrawObjectBoundsFlag(DrawBoundsFlags::DrawObjectBounds, DrawObjectBounds);
+	if (ImGui::Checkbox("Draw Sub-Object Bounds", &DrawSubObjectBounds))
+		TyMemoryValues::SetDrawObjectBoundsFlag(DrawBoundsFlags::DrawSubObjectBounds, DrawSubObjectBounds);
 }
