@@ -18,21 +18,12 @@ namespace Levels {
 	static int GetCurrentLevelID() { return *(int*)(TyBaseAddress + 0x280594); }
 
 	static void InitLevelNames() {
-		char* levelNamesStart = (char*)GetPointerAddress(TyBaseAddress + 0x527BE4, 0x9c);
+		char** levelNamesStart = (char**)(TyBaseAddress + 0x527BE8);
 		
 		//Get the level names from the game text, so they'll be correct for any mod that changes them
 		for (int level = 0; level < 24; level++) {
-			if (levelNamesStart[0] != '\n')
-			{
-				StrNames[level] = LevelIDs[level] + std::string(levelNamesStart);
-				levelNamesStart += strlen(levelNamesStart) + 1;
-			}
-			else
-				StrNames[level] = LevelIDs[level];
-
+			StrNames[level] = LevelIDs[level] + std::string(levelNamesStart[level]);
 			Names[level] = StrNames[level].c_str();
-			//Skip the next identifier
-			levelNamesStart += strlen(levelNamesStart) + 1;
 		}
 	}
 };
